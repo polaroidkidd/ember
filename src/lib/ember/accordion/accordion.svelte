@@ -19,16 +19,18 @@
 	type Props = {
 		tree: Tree<N>;
 		item: Snippet<[ItemProps<N>]>;
+		indent?: string;
 	};
 
-	let { item, tree = $bindable<Tree<N>>({}) }: Props = $props();
+	let { indent, item, tree = $bindable<Tree<N>>({}) }: Props = $props();
 	onMount(() => {
 		tree = Object.entries(tree).reduce(
 			(acc: Tree<N>, [key, value]: [key: string, value: Node<N>]) => {
 				acc[key] = {
 					...value,
 					expanded:
-						Object.hasOwn(value, 'expanded') && typeof value.expanded === 'boolean'
+						Object.hasOwn(value, 'expanded') &&
+						typeof value.expanded === 'boolean'
 							? value.expanded
 							: false
 				};
@@ -44,7 +46,10 @@
 			tree
 		});
 		const currentNode = getNodeByPath({ path, tree });
-		const updatedNode: NodeWithChildren<N> = { ...currentNode, expanded: !currentNode.expanded };
+		const updatedNode: NodeWithChildren<N> = {
+			...currentNode,
+			expanded: !currentNode.expanded
+		};
 
 		tree = updateNodeByPath({
 			tree,
@@ -55,7 +60,7 @@
 </script>
 
 {#each Object.entries(tree) as [id, content] (id)}
-	<div class="ml-1">
+	<div class={indent ?? 'ml-4'}>
 		{@render item({
 			...content,
 			actions: {

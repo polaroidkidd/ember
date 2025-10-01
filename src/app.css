@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+@layer base {
+	/* disable chrome cancel button */
+	input[type='search']::-webkit-search-cancel-button {
+		display: none;
+	}
+}
+@theme {
+	/* New palette: Ember (red/burgundy) - avoids orange */
+	--color-primary-50: #fff6f6;
+	--color-primary-100: #ffeeee;
+	--color-primary-200: #ffd6d6;
+	--color-primary-300: #ffb3b3;
+	--color-primary-400: #ff8080;
+	--color-primary-500: #d64545;
+	--color-primary-600: #b33333;
+	--color-primary-700: #8a2323;
+	--color-primary-800: #601717;
+	--color-primary-900: #340b0b;
+}
+
+/*place global styles here */
+html,
+body {
+	@apply h-full;
+	@apply min-h-full;
+	@apply flex;
+	@apply flex-col;
+	/* light mode defaults for better readability */
+	@apply text-gray-900;
+
+	.dark & {
+		@apply text-gray-200;
+	}
+}
+main {
+	@apply flex-1;
+	@apply container mx-auto mt-4 mb-20 px-5;
+	/* ensure readable text color in light mode */
+	@apply text-gray-800;
+
+	.dark & {
+		@apply text-gray-300;
+	}
+}
+
+/* Background styles */
+.bg-gradient {
+	@apply fixed inset-0 -z-10;
+	background:
+		radial-gradient(
+			circle at top left,
+			var(--color-primary-100),
+			transparent 50%
+		),
+		radial-gradient(
+			circle at bottom right,
+			var(--color-primary-200),
+			transparent 50%
+		);
+	background-attachment: fixed;
+	/* subtle overlay to keep text readable over the gradient */
+	opacity: 0.12;
+}
+
+.dark .bg-gradient {
+	background:
+		radial-gradient(
+			circle at top left,
+			var(--color-primary-900),
+			transparent 50%
+		),
+		radial-gradient(
+			circle at bottom right,
+			var(--color-primary-800),
+			transparent 50%
+		);
+	opacity: 0.3;
+}
+
+.bg-grid {
+	@apply fixed inset-0 -z-10;
+	background-image:
+		linear-gradient(to right, var(--color-primary-200) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--color-primary-200) 1px, transparent 1px);
+	background-size: 2rem 2rem;
+	/* slightly stronger grid in light mode for texture without affecting legibility */
+	opacity: 0.16;
+}
+
+.dark .bg-grid {
+	background-image:
+		linear-gradient(to right, var(--color-primary-700) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--color-primary-700) 1px, transparent 1px);
+	opacity: 0.05;
+}
