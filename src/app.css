@@ -35,7 +35,7 @@ body {
 }
 main {
 	@apply flex-1;
-	@apply container mx-auto mt-4 mb-20 px-5;
+	@apply mx-auto mt-4 mb-20 w-[90vw] max-w-[1024px];
 	/* ensure readable text color in light mode */
 	@apply text-gray-800;
 

@@ -5,11 +5,18 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
 	plugins: [devtoolsJson(), tailwindcss(), sveltekit()],
+	server: {
+		port: 3000
+	},
+	preview: {
+		port: 3000
+	},
 	test: {
+		includeTaskLocation: true,
 		expect: { requireAssertions: true },
 		projects: [
 			{
-				extends: './vite.config.ts',
+				extends: './vite.config.mts',
 				test: {
 					name: 'client',
 					environment: 'browser',
@@ -24,7 +31,7 @@ export default defineConfig({
 				}
 			},
 			{
-				extends: './vite.config.ts',
+				extends: './vite.config.mts',
 				test: {
 					name: 'server',
 					environment: 'node',

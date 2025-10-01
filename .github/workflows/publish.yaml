@@ -1,0 +1,52 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+env:
+  NODE_VERSION: 24.7.0
+  PNPM_VERSION: 10.17.1
+
+jobs:
+  install-dependencies:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v5
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+
+  publish:
+    name: Publish
+    environment: PRODUCTION
+    needs: [install-dependencies]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+      - env:
+          IS_CI: false
+        name: Build
+        run: |
+          pnpm build
+      - name: Publish Web App
+        uses: cloudflare/wrangler-action@v3
+        with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          packageManager: pnpm

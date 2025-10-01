@@ -1,8 +1,8 @@
 <script lang="ts">
-	import clsx from 'clsx';
+	import '../app.css';
 	import '../app.css';
 
-	import '../app.css';
+	import clsx from 'clsx';
 
 	let { children } = $props();
 </script>

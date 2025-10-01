@@ -19,11 +19,7 @@
 		"preserveSymlinks": false,
 		"verbatimModuleSyntax": true,
 		"isolatedModules": true,
-		"lib": [
-			"esnext",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["esnext", "DOM", "DOM.Iterable"],
 		"module": "esnext",
 		"noEmit": true,
 		"target": "esnext"

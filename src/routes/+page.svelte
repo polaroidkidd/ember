@@ -1,18 +1,19 @@
+<svelte:options runes />
+
 <script lang="ts">
-	// oxlint-disable no-useless-escape
+	import clsx from 'clsx';
+	import { fly } from 'svelte/transition';
 	import Highlight from 'svelte-highlight';
 	import typescript from 'svelte-highlight/languages/typescript';
-
 	import github from 'svelte-highlight/styles/github';
 
 	import { MOCK_CODE_STRING, MOCK_TREE } from '$lib/__mock__/data';
 	import Accordion from '$lib/ember/accordion/accordion.svelte';
 	import { type ItemProps } from '$lib/ember/accordion/types';
-	import clsx from 'clsx';
-	import { fly } from 'svelte/transition';
 
 	let tree = $state(MOCK_TREE);
 	let action = $state('delete');
+
 	const exampleTree = `
 /**
  * A node in the tree. Can have any extra properties
@@ -49,15 +50,20 @@ export type NodeWithChildren<T extends object = object> = Node<T> & {
  */
 export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>>;
 `;
+
+	function copyToClipboard(anchor: string) {
+		navigator.clipboard.writeText(`${window.location.origin}/#${anchor}`);
+	}
 </script>
 
 <svelte:head>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html github}
 </svelte:head>
-<div class="mb-5 flex items-center justify-baseline text-4xl">
-	<h1 class={clsx('')}>
-		Nestable <i>Headless</i> Accordion
-	</h1>
+
+<div class="mb-5 flex items-center justify-baseline">
+	<h1 class="text-4xl">Ember</h1>
+
 	<a
 		href="https://github.com/polaroidkidd/ember"
 		target="_blank"
@@ -66,6 +72,20 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 		<img class="mr-2 ml-4 h-6 w-6" src="/github.svg" alt="GitHub Logo" />
 	</a>
 </div>
+<h2 class="mb-10 text-2xl">A collection of headless svelte-5 components</h2>
+<button
+	type="button"
+	onclick={() => copyToClipboard('nestable-accordion')}
+	class="cursor-pointer hover:underline"
+>
+	<h3
+		data-tooltip="Click to Copy"
+		id="nestable-accordion"
+		class={clsx('mb-2 text-xl')}
+	>
+		Nestable Accordion
+	</h3>
+</button>
 
 <p class="mb-2">
 	Most implementations use arrays here and loop over everything to find the
@@ -122,8 +142,8 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<option value="insert">Insert</option>
 	<option value="update">Update</option>
 </select>
-
-{#snippet item(content: ItemProps<{}>)}
+<!-- The ItemProps type should contain the type deffinition of an individual item in the tree-->
+{#snippet item(content: ItemProps<object>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}
@@ -193,3 +213,34 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 <div class="mt-10 overflow-hidden rounded-md border-[1px] shadow-2xl">
 	<Highlight language={typescript} code={MOCK_CODE_STRING} />
 </div>
+
+<style lang="postcss">
+	[data-tooltip] {
+		position: relative;
+	}
+
+	[data-tooltip]::after {
+		position: absolute;
+		opacity: 0;
+		pointer-events: none;
+		content: attr(data-tooltip);
+		left: 2.25rem;
+		top: -2.75rem;
+		border-radius: 3px;
+		box-shadow: 0 0 5px 2px rgba(100, 100, 100, 0.6);
+		background-color: white;
+		width: 8rem;
+		font-size: small;
+		z-index: 10;
+		padding: 8px;
+
+		transform: translateY(-20px);
+		transition: all 150ms cubic-bezier(0.25, 0.8, 0.25, 1);
+	}
+
+	[data-tooltip]:hover::after {
+		opacity: 1;
+		transform: translateY(0);
+		transition-duration: 300ms;
+	}
+</style>
