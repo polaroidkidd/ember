@@ -92,7 +92,7 @@ jobs:
   publish:
     name: Publish
     environment: STAGING
-    needs: [ install-dependencies]
+    needs: [install-dependencies]
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
@@ -112,7 +112,7 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy ./apps/scheduled/remove-dangling-tags/src/index.ts  -e production --config ./wrangler.jsonc
+          command: pages deploy
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           packageManager: pnpm

@@ -1,6 +1,5 @@
 description: 'Sets up Node.js, PNPM, and caches dependencies'
 
-
 inputs:
   install-deps:
     default: 'true'

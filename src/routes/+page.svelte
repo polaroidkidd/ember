@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
 	import clsx from 'clsx';
 	import { fly } from 'svelte/transition';
@@ -48,14 +50,20 @@ export type NodeWithChildren<T extends object = object> = Node<T> & {
  */
 export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>>;
 `;
+
+	function copyToClipboard(anchor: string) {
+		navigator.clipboard.writeText(`${window.location.origin}/#${anchor}`);
+	}
 </script>
 
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html github}
 </svelte:head>
+
 <div class="mb-5 flex items-center justify-baseline">
-	<h1 class=" text-4xl">Ember</h1>
+	<h1 class="text-4xl">Ember</h1>
+
 	<a
 		href="https://github.com/polaroidkidd/ember"
 		target="_blank"
@@ -65,7 +73,19 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	</a>
 </div>
 <h2 class="mb-10 text-2xl">A collection of headless svelte-5 components</h2>
-<h3 class={clsx('mb-2 text-xl')}>Nestable Accordion</h3>
+<button
+	type="button"
+	onclick={() => copyToClipboard('nestable-accordion')}
+	class="cursor-pointer hover:underline"
+>
+	<h3
+		data-tooltip="Click to Copy"
+		id="nestable-accordion"
+		class={clsx('mb-2 text-xl')}
+	>
+		Nestable Accordion
+	</h3>
+</button>
 
 <p class="mb-2">
 	Most implementations use arrays here and loop over everything to find the
@@ -193,3 +213,34 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 <div class="mt-10 overflow-hidden rounded-md border-[1px] shadow-2xl">
 	<Highlight language={typescript} code={MOCK_CODE_STRING} />
 </div>
+
+<style lang="postcss">
+	[data-tooltip] {
+		position: relative;
+	}
+
+	[data-tooltip]::after {
+		position: absolute;
+		opacity: 0;
+		pointer-events: none;
+		content: attr(data-tooltip);
+		left: 2.25rem;
+		top: -2.75rem;
+		border-radius: 3px;
+		box-shadow: 0 0 5px 2px rgba(100, 100, 100, 0.6);
+		background-color: white;
+		width: 8rem;
+		font-size: small;
+		z-index: 10;
+		padding: 8px;
+
+		transform: translateY(-20px);
+		transition: all 150ms cubic-bezier(0.25, 0.8, 0.25, 1);
+	}
+
+	[data-tooltip]:hover::after {
+		opacity: 1;
+		transform: translateY(0);
+		transition-duration: 300ms;
+	}
+</style>
