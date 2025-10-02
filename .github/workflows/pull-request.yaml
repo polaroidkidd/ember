@@ -112,7 +112,7 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy ./apps/scheduled/remove-dangling-tags/src/index.ts  -e production --config ./apps/scheduled/remove-dangling-tags/wrangler.jsonc
+          command: deploy ./apps/scheduled/remove-dangling-tags/src/index.ts  -e production --config ./wrangler.jsonc
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           packageManager: pnpm
