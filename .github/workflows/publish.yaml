@@ -1,32 +1,18 @@
-name: Pull Request
+name: Publish
+
 on:
-  pull_request: null
-  workflow_dispatch:
-    inputs:
-      force_deploy:
-        default: false
-        description: Force run all jobs
-        required: false
-        type: boolean
+    push:
+        branches:
+        - master
 
-concurrency:
-  cancel-in-progress: true
-  group: ${{ github.head_ref }}
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 env:
   NODE_VERSION: 24.7.0
   PNPM_VERSION: 10.17.1
 
 jobs:
-  detect-changes:
-    name: Detect Changes
-    outputs:
-      src: ${{ steps.path-filter.outputs.src }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - id: path-filter
-        uses: ./.github/actions/path-filter
+
   install-dependencies:
     name: Install Dependencies
     runs-on: ubuntu-latest
@@ -41,8 +27,8 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
-    needs: [detect-changes, install-dependencies]
+    
+    needs: [install-dependencies]
     steps:
       - name: Git Checkout
         uses: actions/checkout@v5
@@ -73,15 +59,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Test
-    if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
-    needs: [resolve-playwright-version, detect-changes]
+
+    needs: [resolve-playwright-version]
     timeout-minutes: 15
     container:
       image: mcr.microsoft.com/playwright:v${{ needs['resolve-playwright-version'].outputs.version }}
       options: --user 1001
     steps:
-      - name: Git Checkout
+      - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
       - name: Setup environment
         uses: ./.github/actions/env-setup
         with:
@@ -91,7 +80,7 @@ jobs:
         run: pnpm test
   publish:
     name: Publish
-    environment: STAGING
+    environment: PRODUCTION
     needs: [ install-dependencies]
     runs-on: ubuntu-latest
     steps:
@@ -108,11 +97,14 @@ jobs:
         run: |
           pnpm build
       - name: Publish Web App
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy ./apps/scheduled/remove-dangling-tags/src/index.ts  -e production --config ./apps/scheduled/remove-dangling-tags/wrangler.jsonc
+          # Optional: Switch what branch you are publishing to.
+          # By default, this will be the branch which triggered this workflow
+          branch: ${{ github.head_ref }}
+          directory: ./.svelte-kit/cloudflare
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          packageManager: pnpm
+          projectName: ember
