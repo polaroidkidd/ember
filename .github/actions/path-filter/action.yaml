@@ -1,0 +1,18 @@
+description: Determines which paths have changed in the repository
+
+name: Path Filter
+outputs:
+  src:
+    description: Whether src has been changed
+    value: ${{ steps.filter.outputs.src }}
+
+runs:
+  steps:
+    - id: filter
+      uses: dorny/paths-filter@v2
+      with:
+        filters: |
+          src:
+            - 'src/**'
+        list-files: json
+  using: composite

@@ -5,7 +5,6 @@ import {
 	deleteNodeByPath,
 	getChildrenOfNodesByNodeIds,
 	getNodeByPath,
-	getNodeByPathOrThrow,
 	getPathToNodeById,
 	insertNode,
 	insertNodeByPath,
@@ -49,37 +48,6 @@ describe('tree-utils', () => {
 		expect(node.id).toBe('c');
 	});
 
-	describe('getNodeByPathOrThrow', () => {
-		it('returns node for valid path', () => {
-			const node = getNodeByPathOrThrow({ path: ['a', 'b', 'c'], tree });
-			expect(node.id).toBe('c');
-		});
-
-		it('throws when path is empty', () => {
-			expect(() => getNodeByPathOrThrow({ path: [], tree })).toThrow(
-				'path must be a non-empty array'
-			);
-		});
-
-		it('throws when root key is missing', () => {
-			expect(() => getNodeByPathOrThrow({ path: ['z'], tree })).toThrow(
-				'Node not found at root key: z'
-			);
-		});
-
-		it('throws when intermediate node has no children', () => {
-			expect(() => getNodeByPathOrThrow({ path: ['e', 'x'], tree })).toThrow(
-				'Node at path e has no children'
-			);
-		});
-
-		it('throws when a path segment is missing', () => {
-			expect(() => getNodeByPathOrThrow({ path: ['a', 'b', 'z'], tree })).toThrow(
-				'Node not found at path segment: z (index 2)'
-			);
-		});
-	});
-
 	it('getChildrenOfNodesByNodeIds returns all descendant ids', () => {
 		const ids: string[] = [];
 		const result = getChildrenOfNodesByNodeIds({ node: tree.a, ids });
@@ -103,14 +71,22 @@ describe('tree-utils', () => {
 	it('insertNode adds node at path', () => {
 		const treeCopy = createTree();
 		const node: NodeWithChildren = { id: 'x' };
-		const newTree = insertNodeByPath({ tree: treeCopy, path: ['a', 'd'], node });
+		const newTree = insertNodeByPath({
+			tree: treeCopy,
+			path: ['a', 'd'],
+			node
+		});
 		expect(newTree.a.children!.d.children!.x.id).toBe('x');
 	});
 
 	it('updateNode updates node at path', () => {
 		const treeCopy = createTree();
 		const updated: NodeWithChildren = { id: 'b', foo: 123 };
-		const newTree = updateNodeByPath({ tree: treeCopy, path: ['a', 'b'], update: updated });
+		const newTree = updateNodeByPath({
+			tree: treeCopy,
+			path: ['a', 'b'],
+			update: updated
+		});
 		expect(newTree.a.children!.b.foo).toBe(123);
 	});
 
@@ -119,7 +95,10 @@ describe('tree-utils', () => {
 		const node: NodeWithChildren = { id: 'x', label: 'child of d' };
 		const parent = treeCopy.a.children!.d;
 		const newTree = insertNode({ tree: treeCopy, parent, node });
-		expect(newTree.a.children!.d.children!.x).toMatchObject({ id: 'x', label: 'child of d' });
+		expect(newTree.a.children!.d.children!.x).toMatchObject({
+			id: 'x',
+			label: 'child of d'
+		});
 	});
 
 	it('updateNode updates node using direct reference', () => {
@@ -145,7 +124,11 @@ describe('tree-utils', () => {
 			const originalD = treeCopy.a.children!.d;
 
 			const updated: NodeWithChildren = { id: 'b', foo: 123 };
-			const newTree = updateNodeByPath({ tree: treeCopy, path: ['a', 'b'], update: updated });
+			const newTree = updateNodeByPath({
+				tree: treeCopy,
+				path: ['a', 'b'],
+				update: updated
+			});
 
 			// root 'a' should be a new object because one of its children changed
 			expect(newTree.a).not.toBe(originalA);
@@ -164,7 +147,11 @@ describe('tree-utils', () => {
 			const originalE = treeCopy.e;
 
 			const node: NodeWithChildren = { id: 'x' };
-			const newTree = insertNodeByPath({ tree: treeCopy, path: ['a', 'd'], node });
+			const newTree = insertNodeByPath({
+				tree: treeCopy,
+				path: ['a', 'd'],
+				node
+			});
 
 			expect(newTree.a).not.toBe(originalA);
 			// existing sibling 'b' should remain referentially equal

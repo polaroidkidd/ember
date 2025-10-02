@@ -1,0 +1,63 @@
+description: 'Sets up Node.js, PNPM, and caches dependencies'
+
+inputs:
+  install-deps:
+    default: 'true'
+
+    description: Whether to install dependencies
+    required: false
+  node-version:
+    default: 24.7.0
+    description: Node.js version
+    required: false
+  pnpm-version:
+    default: 10.17.1
+    description: PNPM version
+    required: false
+name: Setup Environment
+runs:
+  steps:
+    - name: Git Composite Checkout
+      uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+    - name: Setup PNPM
+      uses: pnpm/action-setup@v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+
+    - id: pnpm-cache
+      name: Setup PNPM cache
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.os }}-pr-${{ github.event.pull_request.id }}-${{ hashFiles('./pnpm-lock.yaml') }}
+
+        path: |
+          ./node_modules
+          ./packages/*/node_modules
+          ./apps/*/node_modules
+          ./apps/scheduled/*/node_modules
+    - if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' && inputs.install-deps == 'true' }}
+      name: Install Dependencies
+      run: pnpm i --frozen-lockfile
+      shell: sh
+    - id: turbo-cache
+      name: Setup Turbo cache
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.os }}-turbo-${{ hashFiles('./pnpm-lock.yaml', 'packages/domain/src/**', 'packages/db-schema/src/**') }}
+        path: |
+          .turbo
+          ./packages/db-schema/src/generated/index.ts
+          ./packages/domain/target/whatsin-service.yaml
+          ./packages/domain/src/api/generated/whatsin-service.ts
+        restore-keys: |
+          ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
+          ${{ runner.os }}-turbo-
+    - name: Build Domain
+      run: |
+        pnpm turbo @whatsin/domain#build
+      shell: sh
+  using: composite

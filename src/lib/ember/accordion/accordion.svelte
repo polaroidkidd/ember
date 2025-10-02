@@ -60,7 +60,7 @@
 </script>
 
 {#each Object.entries(tree) as [id, content] (id)}
-	<div class={indent ?? 'ml-4'}>
+	<div class={indent ?? 'indent'}>
 		{@render item({
 			...content,
 			actions: {
@@ -87,3 +87,9 @@
 		{/if}
 	</div>
 {/each}
+
+<style>
+	.indent {
+		margin-left: 1rem;
+	}
+</style>

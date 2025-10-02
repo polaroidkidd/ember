@@ -65,7 +65,8 @@ export function getNodeByPath<T extends object = object>({
 }): NodeWithChildren<T> {
 	// Keep the original non-optional return type. If the path is invalid
 	// return a reasonable fallback (first root node) to preserve previous API.
-	if (!path || path.length === 0) return Object.values(tree)[0] as NodeWithChildren<T>;
+	if (!path || path.length === 0)
+		return Object.values(tree)[0] as NodeWithChildren<T>;
 	let node = tree[path[0]];
 	if (!node) return Object.values(tree)[0] as NodeWithChildren<T>;
 
@@ -74,27 +75,6 @@ export function getNodeByPath<T extends object = object>({
 		node = node.children[path[i]];
 		if (!node) return Object.values(tree)[0] as NodeWithChildren<T>;
 	}
-	return node;
-}
-
-export function getNodeByPathOrThrow<T extends object = object>({
-	path,
-	tree
-}: {
-	path: string[];
-	tree: Tree<T>;
-}): NodeWithChildren<T> {
-	if (!path || path.length === 0) throw new Error('path must be a non-empty array');
-	let node = tree[path[0]];
-	if (!node) throw new Error(`Node not found at root key: ${path[0]}`);
-
-	for (let i = 1; i < path.length; i++) {
-		if (!node.children)
-			throw new Error(`Node at path ${path.slice(0, i).join('/')} has no children`);
-		node = node.children[path[i]];
-		if (!node) throw new Error(`Node not found at path segment: ${path[i]} (index ${i})`);
-	}
-
 	return node;
 }
 
@@ -215,7 +195,10 @@ export function insertNodeByPath<T extends object = object>({
 		const nextMap = nodeAtKey?.children ?? {};
 		const newChildren = insertAt(nextMap, depth + 1);
 
-		cloned[key] = { ...(nodeAtKey ?? ({ id: key } as NodeWithChildren<T>)), children: newChildren };
+		cloned[key] = {
+			...(nodeAtKey ?? ({ id: key } as NodeWithChildren<T>)),
+			children: newChildren
+		};
 		return cloned;
 	};
 

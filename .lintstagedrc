@@ -1,0 +1,8 @@
+{
+	"*.{js,ts,svelte,css,scss,postcss,md,json,yml}": [
+		"prettier --config ./.prettierrc --write",
+		"prettier --config ./.prettierrc --check"
+	],
+	"*.{js,ts,svelte}": ["eslint --fix"],
+	"*.{svelte}": ["pnpm check"]
+}

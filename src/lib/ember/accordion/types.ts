@@ -1,6 +1,6 @@
 /**
  * A node in the tree. Can have any extra properties
- */	
+ */
 export type Node<T extends object = object> = T & {
 	/*
 	 * A unique identifier for the node. This is
@@ -16,7 +16,7 @@ export type Node<T extends object = object> = T & {
 	 * which is passed in and lets you determine
 	 * if a node is expanded in the item snippet
 	 */
-	expanded?: boolean; 
+	expanded?: boolean;
 	/*
 	 * Any other properties you want to add to the node
 	 */
@@ -33,7 +33,10 @@ export type NodeWithChildren<T extends object = object> = Node<T> & {
 /**
  * The complete accordion tree. This is a record of nodes with children
  */
-export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>>;
+export type Tree<T extends object = object> = Record<
+	string,
+	NodeWithChildren<T>
+>;
 
 /**
  * Actions that can be performed on a node.
