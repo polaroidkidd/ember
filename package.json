@@ -31,7 +31,8 @@
 		"test:ui": "vitest --watch",
 		"changeset": "changeset",
 		"version-packages": "changeset version",
-		"publish-packages": "changeset publish"
+		"publish-packages": "changeset publish",
+		"ci:publish": "pnpm publish -r"
 	},
 	"files": [
 		"dist",
