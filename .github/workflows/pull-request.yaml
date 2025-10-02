@@ -55,7 +55,7 @@ jobs:
         run: |
           pnpm lint
   test:
-    name: tint
+    name: Test
     runs-on: ubuntu-latest
     if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
     needs: [detect-changes, install-dependencies]
@@ -68,7 +68,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           pnpm-version: ${{ env.PNPM_VERSION }}
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: test
+        run:  pnpm exec playwright install --with-deps
+      - name: Test
         run: |
           pnpm test

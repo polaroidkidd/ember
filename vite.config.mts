@@ -6,6 +6,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	plugins: [devtoolsJson(), tailwindcss(), sveltekit()],
 	test: {
+		includeTaskLocation: true,
 		expect: { requireAssertions: true },
 		projects: [
 			{

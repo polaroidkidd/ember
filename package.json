@@ -26,8 +26,8 @@
 		"format": "prettier --write .",
 		"lint": "eslint \"./src/**/*.{js,ts,svelte}\"",
 		"lint:fix": "eslint \"./src/**/*.{js,ts,svelte}\" --fix",
-		"test:unit": "vitest",
-		"test": "npm run test:unit -- --run"
+		"test": "vitest --run",
+		"test:ui": "vitest --watch"
 	},
 	"files": [
 		"dist",
@@ -60,6 +60,7 @@
 		"@types/node": "^22",
 		"@types/uuid": "^11.0.0",
 		"@vitest/browser": "^3.2.3",
+		"@vitest/ui": "3.2.4",
 		"clsx": "^2.1.1",
 		"eslint": "^9.22.0",
 		"eslint-config-prettier": "^10.0.1",
