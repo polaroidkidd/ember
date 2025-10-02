@@ -1,18 +1,12 @@
-name: Pull Request
+name: Release
+
 on:
-  pull_request: null
+  push:
+    branches:
+      - master
   workflow_dispatch:
-    inputs:
-      force_deploy:
-        default: false
-        description: Force run all jobs
-        required: false
-        type: boolean
 
-concurrency:
-  cancel-in-progress: true
-  group: ${{ github.head_ref }}
-
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 env:
   NODE_VERSION: 24.7.0
   PNPM_VERSION: 10.17.1
@@ -80,8 +74,11 @@ jobs:
       image: mcr.microsoft.com/playwright:v${{ needs['resolve-playwright-version'].outputs.version }}
       options: --user 1001
     steps:
-      - name: Git Checkout
+      - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
       - name: Setup environment
         uses: ./.github/actions/env-setup
         with:
@@ -89,3 +86,15 @@ jobs:
           pnpm-version: ${{ env.PNPM_VERSION }}
       - name: Test
         run: pnpm test
+  release:
+    name: Create or Update Release PR
+    runs-on: ubuntu-latest
+    needs: [lint, test, install-dependencies, detect-changes]
+    if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Create or Update Release Pull Request (no publishing)
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
