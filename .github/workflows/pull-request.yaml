@@ -65,13 +65,13 @@ jobs:
       - name: resolve-playwright-version
         id: resolve-playwright-version
         run: |
-          version="$(yq -r '.devDependencies["@playwright/test"] // .dependencies["@playwright/test"] // ""' package.json)"
-          test -n "$version" || { echo "No @playwright/test version found in package.json"; exit 1; }
+          version="$(yq -r '.devDependencies["playwright"] // .dependencies["playwright"] // ""' package.json)"
+          test -n "$version" || { echo "No playwright version found in package.json"; exit 1; }
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
   test:
     runs-on: ubuntu-latest
-    needs: [resolve-playwright-version, detect-changes, lint]
+    needs: [resolve-playwright-version, detect-changes]
     timeout-minutes: 15
     container:
       image: mcr.microsoft.com/playwright:v${{ needs['resolve-playwright-version'].outputs.version }}
