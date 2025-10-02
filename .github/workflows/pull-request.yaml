@@ -55,6 +55,7 @@ jobs:
         run: |
           pnpm lint
   resolve-playwright-version:
+    name: Resolve Playwright Version
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps['resolve-playwright-version'].outputs.version }}
@@ -71,6 +72,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    name: Test
+    if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
     needs: [resolve-playwright-version, detect-changes]
     timeout-minutes: 15
     container:
@@ -84,23 +87,5 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           pnpm-version: ${{ env.PNPM_VERSION }}
-      - name: E2E Tests
+      - name: Test
         run: pnpm test
-  # test:
-  #   name: Test
-  #   runs-on: ubuntu-latest
-  #   if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
-  #   needs: [detect-changes, install-dependencies]
-  #   steps:
-  #     - name: Git Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Setup environment
-  #       uses: ./.github/actions/env-setup
-  #       with:
-  #         node-version: ${{ env.NODE_VERSION }}
-  #         pnpm-version: ${{ env.PNPM_VERSION }}
-  #     - name: Install Playwright Browsers
-  #       run:  pnpm exec playwright install --with-deps
-  #     - name: Test
-  #       run: |
-  #         pnpm test
