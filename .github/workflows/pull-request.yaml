@@ -1,0 +1,72 @@
+name: Pull Request
+on:
+  pull_request: null
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        default: false
+        description: Force run all jobs
+        required: false
+        type: boolean
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.head_ref }}
+
+env:
+  NODE_VERSION: 24.7.0
+  PNPM_VERSION: 10.17.1
+
+jobs:
+  detect-changes:
+    name: Detect Changes
+    outputs:
+      src: ${{ steps.path-filter.outputs.src }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: path-filter
+        uses: ./.github/actions/path-filter
+  install-dependencies:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
+    needs: [detect-changes, install-dependencies]
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+      - name: Lint
+        run: |
+          pnpm lint
+  test:
+    name: tint
+    runs-on: ubuntu-latest
+    if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
+    needs: [detect-changes, install-dependencies]
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+      - name: test
+        run: |
+          pnpm test

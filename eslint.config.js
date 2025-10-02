@@ -1,16 +1,18 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from 'eslint-plugin-storybook';
-
-import prettier from 'eslint-config-prettier';
 import { fileURLToPath } from 'node:url';
+
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
-import svelte from 'eslint-plugin-svelte';
 import { defineConfig } from 'eslint/config';
+import prettier from 'eslint-config-prettier';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import svelte from 'eslint-plugin-svelte';
+import unusedImports from 'eslint-plugin-unused-imports';
+import yml from 'eslint-plugin-yml';
 import globals from 'globals';
 import ts from 'typescript-eslint';
-import svelteConfig from './svelte.config.js';
+import yamlParser from 'yaml-eslint-parser';
 
+import svelteConfig from './svelte.config.js';
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default defineConfig(
@@ -21,13 +23,29 @@ export default defineConfig(
 	prettier,
 	...svelte.configs.prettier,
 	{
+		plugins: {
+			'simple-import-sort': simpleImportSort,
+			'unused-imports': unusedImports
+		},
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.node }
 		},
 		rules: {
 			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
 			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-			'no-undef': 'off'
+			'no-undef': 'off',
+			'simple-import-sort/imports': 'error',
+			'simple-import-sort/exports': 'error',
+			'unused-imports/no-unused-imports': 'error',
+			'unused-imports/no-unused-vars': [
+				'warn',
+				{
+					vars: 'all',
+					varsIgnorePattern: '^_',
+					args: 'after-used',
+					argsIgnorePattern: '^_'
+				}
+			]
 		}
 	},
 	{
@@ -39,6 +57,30 @@ export default defineConfig(
 				parser: ts.parser,
 				svelteConfig
 			}
+		}
+	},
+	{
+		files: ['**/*.yml', '**/*.yaml'],
+		languageOptions: {
+			parser: yamlParser,
+			parserOptions: {
+				yamlVersion: '1.2'
+			}
+		},
+		plugins: {
+			yml: yml
+		},
+		rules: {
+			'yml/indent': ['error', 2],
+			'yml/quotes': ['error', { prefer: 'single' }],
+			'yml/sort-keys': ['error', 'asc'],
+			'yml/no-empty-document': 'error',
+			'yml/no-empty-key': 'error',
+			'yml/no-empty-mapping-value': 'error',
+			'yml/no-empty-sequence-entry': 'error',
+			'yml/no-irregular-whitespace': 'error',
+			'yml/no-tab-indent': 'error',
+			'yml/plain-scalar': 'error'
 		}
 	}
 );

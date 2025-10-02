@@ -1,18 +1,17 @@
 <script lang="ts">
-	// oxlint-disable no-useless-escape
+	import clsx from 'clsx';
+	import { fly } from 'svelte/transition';
 	import Highlight from 'svelte-highlight';
 	import typescript from 'svelte-highlight/languages/typescript';
-
 	import github from 'svelte-highlight/styles/github';
 
 	import { MOCK_CODE_STRING, MOCK_TREE } from '$lib/__mock__/data';
 	import Accordion from '$lib/ember/accordion/accordion.svelte';
 	import { type ItemProps } from '$lib/ember/accordion/types';
-	import clsx from 'clsx';
-	import { fly } from 'svelte/transition';
 
 	let tree = $state(MOCK_TREE);
 	let action = $state('delete');
+
 	const exampleTree = `
 /**
  * A node in the tree. Can have any extra properties
@@ -52,12 +51,11 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 </script>
 
 <svelte:head>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html github}
 </svelte:head>
-<div class="mb-5 flex items-center justify-baseline text-4xl">
-	<h1 class={clsx('')}>
-		Nestable <i>Headless</i> Accordion
-	</h1>
+<div class="mb-5 flex items-center justify-baseline">
+	<h1 class=" text-4xl">Ember</h1>
 	<a
 		href="https://github.com/polaroidkidd/ember"
 		target="_blank"
@@ -66,6 +64,8 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 		<img class="mr-2 ml-4 h-6 w-6" src="/github.svg" alt="GitHub Logo" />
 	</a>
 </div>
+<h2 class="mb-10 text-2xl">A collection of headless svelte-5 components</h2>
+<h3 class={clsx('mb-2 text-xl')}>Nestable Accordion</h3>
 
 <p class="mb-2">
 	Most implementations use arrays here and loop over everything to find the
@@ -122,8 +122,8 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<option value="insert">Insert</option>
 	<option value="update">Update</option>
 </select>
-
-{#snippet item(content: ItemProps<{}>)}
+<!-- The ItemProps type should contain the type deffinition of an individual item in the tree-->
+{#snippet item(content: ItemProps<object>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}
