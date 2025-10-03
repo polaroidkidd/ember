@@ -1,5 +1,12 @@
 # @dle.dev/ember
 
+## 0.0.4
+
+### Patch Changes
+
+- ff5c6b5: # Update Documentation
+  - Include a roadmap for future components and utilities
+
 ## 0.0.3
 
 ### Patch Changes
