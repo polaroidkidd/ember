@@ -34,6 +34,10 @@ Scripts available in `package.json`:
 - `npm run test` — runs unit tests (vitest).
 - `npm run check` — runs type/svelte checkers.
 
+## Roadmap
+
+- Include a modal store
+
 ## Contributing
 
 PRs and issues welcome. Please keep changes small and add tests.
