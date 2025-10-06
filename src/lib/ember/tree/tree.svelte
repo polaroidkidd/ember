@@ -1,28 +1,32 @@
 <script lang="ts" generics="N extends object = object">
 	import { onMount, type Snippet } from 'svelte';
 
-	import Self from './accordion.svelte';
-	import type {} from './actions';
-	import {
-		deleteNode,
-		getNodeByPath,
-		getPathToNodeById,
-		insertNode,
-		updateNode,
-		updateNodeByPath
-	} from './actions';
+	import Self from './tree.svelte';
 	import type { Node, NodeActions, NodeWithChildren, Tree } from './types';
+	import type {} from './utils';
+	import { deleteNode, insertNode, updateNode } from './utils';
 
-	type ItemProps<N extends object> = NodeWithChildren<N> & {
+	type NodeProps<N extends object> = NodeWithChildren<N> & {
 		actions: NodeActions<N>;
 	};
 	type Props = {
 		tree: Tree<N>;
-		item: Snippet<[ItemProps<N>]>;
-		indent?: string;
+		node: Snippet<[NodeProps<N>]>;
+		wrapperProps?: Record<string, unknown>;
+		wrapperElement?: keyof HTMLElementTagNameMap;
 	};
 
-	let { indent, item, tree = $bindable<Tree<N>>({}) }: Props = $props();
+	let {
+		node,
+		tree = $bindable<Tree<N>>({}),
+		wrapperProps,
+		wrapperElement
+	}: Props = $props();
+
+	// Ensure all nodes have an expanded property
+	// If they don't, default to false
+	// This is done on mount to avoid issues with
+	// SSR and hydration
 	onMount(() => {
 		tree = Object.entries(tree).reduce(
 			(acc: Tree<N>, [key, value]: [key: string, value: Node<N>]) => {
@@ -40,31 +44,23 @@
 		);
 	});
 
-	function toggle(id: string) {
-		const path = getPathToNodeById({
-			id,
+	function toggle(node: NodeWithChildren<N>) {
+		tree = updateNode({
+			node: {
+				...node,
+				expanded: !node.expanded
+			},
 			tree
-		});
-		const currentNode = getNodeByPath({ path, tree });
-		const updatedNode: NodeWithChildren<N> = {
-			...currentNode,
-			expanded: !currentNode.expanded
-		};
-
-		tree = updateNodeByPath({
-			tree,
-			update: updatedNode,
-			path
 		});
 	}
 </script>
 
 {#each Object.entries(tree) as [id, content] (id)}
-	<div class={indent ?? 'indent'}>
-		{@render item({
+	<svelte:element this={wrapperElement ?? 'div'} {...wrapperProps}>
+		{@render node({
 			...content,
 			actions: {
-				toggle: () => toggle(id),
+				toggle: () => toggle(content),
 				update: (node) => {
 					tree = updateNode({ node, tree });
 				},
@@ -83,13 +79,12 @@
 		})}
 
 		{#if content.children && content.expanded}
-			<Self {item} bind:tree={content.children} />
+			<Self
+				{node}
+				bind:tree={content.children}
+				{wrapperProps}
+				{wrapperElement}
+			/>
 		{/if}
-	</div>
+	</svelte:element>
 {/each}
-
-<style>
-	.indent {
-		margin-left: 1rem;
-	}
-</style>

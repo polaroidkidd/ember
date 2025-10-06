@@ -56,6 +56,7 @@ export const MOCK_TREE = {
 };
 
 export const MOCK_CODE_STRING = `<script lang="ts">
+    import { Tree, type NodeProps } from '@dle.dev/ember';
 	import clsx from 'clsx';
 	import { v4 as uuid } from 'uuid';
 	const a = uuid();
@@ -83,16 +84,16 @@ export const MOCK_CODE_STRING = `<script lang="ts">
 
 </script>	
 	
-// You're in charge here. The item snippet gets loaded 
+// You're in charge here. The node snippet gets loaded 
 // with three actions. Insert, Delete and Update.
-{#snippet item(content: ItemProps<{}>)}
+{#snippet node(content: nodeProps<{}>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}
 	<div
 		transition:fly
 		class={clsx(
-			'mb-2 inline-flex items-baseline',
+			'mb-2 inline-flex nodes-baseline',
 			'justify-baseline rounded-2xl border-[1px]',
 			'border-primary-200 bg-primary-50 p-4',
 			'align-baseline'
@@ -110,7 +111,7 @@ export const MOCK_CODE_STRING = `<script lang="ts">
 				},
 
 				'px-2 ',
-				'flex items-baseline justify-baseline'
+				'flex nodes-baseline justify-baseline'
 			)}
 			onclick={(e) => {
 				e.preventDefault();
@@ -148,4 +149,14 @@ export const MOCK_CODE_STRING = `<script lang="ts">
 			}}>{action}</button
 		>
 	</div>
-{/snippet}`;
+{/snippet}
+
+<Tree
+	{node}
+	bind:tree
+	wrapperProps={{
+		class: 'ml-6'
+	}}
+	wrapperElement="span"
+/>
+`;

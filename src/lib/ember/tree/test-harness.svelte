@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { MOCK_TREE } from '$lib/__mock__/data';
 
-	import Accordion from './accordion.svelte';
-	import type { ItemProps } from './types';
+	import Accordion from './tree.svelte';
+	import type { NodeProps } from './types';
 
 	// Use a plain mutable tree variable so tests can bind to it.
 	// We deep-clone the mock to avoid shared mutation between tests.
@@ -13,7 +13,7 @@
 	// This keeps the harness minimal while allowing deterministic tests.
 </script>
 
-{#snippet item(content: ItemProps<object>)}
+{#snippet node(content: NodeProps<object>)}
 	<div data-testid={`node-${content.id}`} class="node">
 		<button
 			data-testid={`toggle-${content.id}`}
@@ -53,7 +53,7 @@
 {/snippet}
 
 <div class="accordion">
-	<Accordion {item} bind:tree />
+	<Accordion {node} bind:tree />
 </div>
 
 <style>

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import type { NodeWithChildren, Tree } from './types';
 import {
 	deleteNode,
 	deleteNodeByPath,
@@ -10,8 +11,7 @@ import {
 	insertNodeByPath,
 	updateNode,
 	updateNodeByPath
-} from './actions';
-import type { NodeWithChildren, Tree } from './types';
+} from './utils';
 
 describe('tree-utils', () => {
 	const tree: Tree = {

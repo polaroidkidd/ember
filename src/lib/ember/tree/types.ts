@@ -14,7 +14,7 @@ export type Node<T extends object = object> = T & {
 	/*
 	 * This property gets tacked on to the tree
 	 * which is passed in and lets you determine
-	 * if a node is expanded in the item snippet
+	 * if a node is expanded in the node snippet
 	 */
 	expanded?: boolean;
 	/*
@@ -64,6 +64,6 @@ export type NodeActions<N extends object> = {
 	update: (node: NodeWithChildren<N>) => void;
 };
 
-export type ItemProps<N extends object> = NodeWithChildren<N> & {
+export type NodeProps<N extends object> = NodeWithChildren<N> & {
 	actions: NodeActions<N>;
 };
