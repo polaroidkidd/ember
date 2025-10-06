@@ -1,4 +1,4 @@
-import { default as Accordion } from './accordion/accordion.svelte';
-export * from './accordion/actions';
-export * from './accordion/types';
-export { Accordion };
+import { default as Tree } from './tree/tree.svelte';
+export * from './tree/types';
+export * from './tree/utils';
+export { Tree };

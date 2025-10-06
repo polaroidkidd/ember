@@ -8,8 +8,8 @@
 	import github from 'svelte-highlight/styles/github';
 
 	import { MOCK_CODE_STRING, MOCK_TREE } from '$lib/__mock__/data';
-	import Accordion from '$lib/ember/accordion/accordion.svelte';
-	import { type ItemProps } from '$lib/ember/accordion/types';
+	import Tree from '$lib/ember/tree/tree.svelte';
+	import { type NodeProps } from '$lib/ember/tree/types';
 
 	let tree = $state(MOCK_TREE);
 	let action = $state('delete');
@@ -31,7 +31,7 @@ export type Node<T extends object = object> = T & {
 	/*
 	 * This property gets tacked on to the tree
 	 * which is passed in and lets you determine
-	 * if a node is expanded in the item snippet
+	 * if a node is expanded in the node snippet
 	 */
 	expanded?: boolean; 
 	/*
@@ -61,15 +61,21 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	{@html github}
 </svelte:head>
 
-<div class="mb-5 flex items-center justify-baseline">
+<div class="nodes-center mb-5 flex justify-baseline">
 	<h1 class="text-4xl">Ember</h1>
 
+	<img src="/favicon.svg" alt="Ember Logo" class="ml-2 h-9" />
 	<a
 		href="https://github.com/polaroidkidd/ember"
 		target="_blank"
 		rel="noreferrer"
+		class="ml-auto"
 	>
-		<img class="mr-2 ml-4 h-6 w-6" src="/github.svg" alt="GitHub Logo" />
+		<img
+			class="mr-2 ml-4 h-6 w-6 rounded-4xl hover:bg-primary-200"
+			src="/github.svg"
+			alt="GitHub Logo"
+		/>
 	</a>
 </div>
 <h2 class="mb-10 text-2xl">A collection of headless svelte-5 components</h2>
@@ -92,7 +98,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	right node, but this implementation uses a record for O(1) access. Use this
 	implementation for example when you have to render a large and deeply nested
 	file tree. Additionally this library provides insert, update and delete
-	actions to the item snippet as helpers. They are <strong>not required</strong>
+	actions to the node snippet as helpers. They are <strong>not required</strong>
 	to use the component, but they make it easier to work with the tree.
 </p>
 
@@ -100,7 +106,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 <ol class="ml-12 list-outside list-decimal py-4">
 	<li>A snippet, which renders each entry</li>
 	<li>
-		A tree structure which represents the items in the accordion. This has to be
+		A tree structure which represents the nodes in the accordion. This has to be
 		a binded state
 	</li>
 </ol>
@@ -111,7 +117,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<Highlight language={typescript} code={exampleTree} />
 </div>
 <p class="mb-2">
-	The `item` snippet gets loaded with four helper methods. Update, Insert,
+	The `node` snippet gets loaded with four helper methods. Update, Insert,
 	Delete and Toggle
 </p>
 <ul class="mb-10 ml-12 list-outside list-disc py-4">
@@ -142,15 +148,15 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<option value="insert">Insert</option>
 	<option value="update">Update</option>
 </select>
-<!-- The ItemProps type should contain the type deffinition of an individual item in the tree-->
-{#snippet item(content: ItemProps<object>)}
+<!-- The nodeProps type should contain the type deffinition of an individual node in the tree-->
+{#snippet node(content: NodeProps<object>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}
 	<div
 		transition:fly
 		class={clsx(
-			'mb-2 inline-flex items-baseline',
+			'nodes-baseline mb-2 inline-flex',
 			'justify-baseline rounded-2xl border-[1px]',
 			'border-primary-200 bg-primary-50 p-4',
 			'align-baseline'
@@ -168,7 +174,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 				},
 
 				'px-2 ',
-				'flex items-baseline justify-baseline'
+				'nodes-baseline flex justify-baseline'
 			)}
 			onclick={(e) => {
 				e.preventDefault();
@@ -208,7 +214,14 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	</div>
 {/snippet}
 
-<Accordion {item} bind:tree />
+<Tree
+	{node}
+	bind:tree
+	wrapperProps={{
+		class: 'ml-6'
+	}}
+	wrapperElement="span"
+/>
 <h3 class="mt-5 text-xl">Working Code</h3>
 <div class="mt-10 overflow-hidden rounded-md border-[1px] shadow-2xl">
 	<Highlight language={typescript} code={MOCK_CODE_STRING} />
