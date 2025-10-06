@@ -4,6 +4,6 @@
 
 # Release Notes
 
-## update docs
+## Update Docs
 
 - `README.md` now reflects latest changes
