@@ -16,13 +16,13 @@ Peer dependency: Svelte 5.
 
 ## Components
 
-### Accordion
+### Tree
 
-A small, headless, accessible and highly-customizable nestable accordion component for Svelte. The implementation stores nodes in a Record (object) for O(1) access by id and provides helper actions for toggling, inserting, updating and deleting nodes.
+A small, headless, accessible and highly-customizable nestable tree component for Svelte. The implementation stores children in a Record keyed by id, enabling O(1) lookups within a node’s children. Helper functions are provided for toggling, inserting, updating and deleting nodes.
 
 #### Implementation details
 
-- The component performs DFS-style path resolution to find nodes by id using `getPathToNodeById` and then performs structural cloning to update/insert/delete nodes immutably. See `src/lib/ember/accordion/actions.ts` for the full implementations.
+- The component performs DFS-style path resolution to find nodes by id using `getPathToNodeById` and then performs structural cloning to update/insert/delete nodes immutably. See `src/lib/ember/tree/utils.ts` for the full implementations.
 - `onMount` the component normalizes nodes to ensure `expanded` is set to a boolean.
 
 ## Development
