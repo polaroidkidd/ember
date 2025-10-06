@@ -1,5 +1,14 @@
 # @dle.dev/ember
 
+## 1.0.1
+
+### Patch Changes
+
+- a55493c: # Release Notes
+
+  ## Update Docs
+  - `README.md` now reflects latest changes
+
 ## 1.0.0
 
 ### Major Changes
