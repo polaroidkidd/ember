@@ -32,7 +32,7 @@
 		"changeset": "changeset",
 		"version-packages": "changeset version",
 		"publish-packages": "changeset publish",
-		"ci:publish": "pnpm publish -r"
+		"ci:publish": "pnpm publish -r && pnpm changeset tag"
 	},
 	"files": [
 		"dist",
