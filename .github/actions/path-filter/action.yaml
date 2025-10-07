@@ -1,18 +1,10 @@
 description: Determines which paths have changed in the repository
 
 name: Path Filter
-inputs:
-  paths:
-    description: >-
-      One or more path globs to check (single string). Defaults to 'src/**' if
-      not provided. This value will be used as the pattern for the `src` filter
-      so existing workflows that read the `src` output continue to work.
-    required: false
-    default: src/**
 outputs:
-  changed:
-    description: Whether src has been changed
-    value: ${{ steps.filter.outputs.changed }}
+  src:
+    description: Whether src or dependencies have been changed
+    value: ${{ steps.filter.outputs.src }}
 
 runs:
   steps:
@@ -20,7 +12,9 @@ runs:
       uses: dorny/paths-filter@v2
       with:
         filters: |
-          changed:
-            - ${{ inputs.paths }}
+          src:
+            - 'src/**'
+            - 'package.json'
+            - 'pnpm-lock.yaml'
         list-files: json
   using: composite
