@@ -50,6 +50,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
+          publish: node ./.github/scripts/release.mts
           commit: 'chore: update versions'
           title: 'chore: update versions'
         env:
