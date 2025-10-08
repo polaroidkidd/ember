@@ -50,3 +50,64 @@ jobs:
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           packageManager: pnpm
+  create-github-release:
+    name: Create GitHub Release
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout (fetch tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare release notes from CHANGELOG.md (Node)
+        id: prepare_release
+        run: |
+          set -euo pipefail
+          # run the JS ES module script directly with node (no dlx required)
+          node --input-type=module .github/scripts/extract-release-notes.mts "${{ github.ref_name }}" > RELEASE_BODY.md
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          cat RELEASE_BODY.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Setup environment (Node + pnpm)
+        uses: ./.github/actions/env-setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm build
+
+      - name: Pack npm package
+        run: |
+          # npm pack will create a .tgz in the workspace. Rename it to a known name including the tag.
+          npm pack
+          ARTIFACT=$(ls *.tgz | head -n1)
+          TAG="${{ github.ref_name }}"
+          TARGET="package-${TAG}.tgz"
+          mv "$ARTIFACT" "$TARGET"
+          ls -lh "$TARGET"
+
+      - name: Create sources archive for tag
+        run: |
+          TAG="${{ github.ref_name }}"
+          ARCHIVE_NAME="sources-${TAG}.tar.gz"
+          # Create a tarball of the repository at the tag
+          git archive --format=tar.gz --output="$ARCHIVE_NAME" "$TAG"
+          ls -lh "$ARCHIVE_NAME"
+
+      - name: Create GitHub release and upload sources
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.prepare_release.outputs.body }}
+          draft: false
+          prerelease: false
+          files: "sources-${{ github.ref_name }}.tar.gz package-${{ github.ref_name }}.tgz"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

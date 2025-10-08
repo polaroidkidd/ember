@@ -1,4 +1,3 @@
-
 /**
  * release.mts
  *
@@ -14,15 +13,16 @@
  *  node release.mts --dry-run  # same as DRY_RUN
  */
 
-import { readFile } from 'fs/promises';
 import { execSync } from 'child_process';
-import { fileURLToPath } from 'url';
+import { readFile } from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const pkgPath = path.join(root, 'package.json');
 
-const dryRun = process.env.DRY_RUN === '1' || process.argv.includes('--dry-run');
+const dryRun =
+	process.env.DRY_RUN === '1' || process.argv.includes('--dry-run');
 
 function run(cmd: string, opts: Record<string, unknown> = {}): unknown {
 	if (dryRun) {
@@ -54,11 +54,13 @@ try {
 	let tagExists = false;
 	if (!dryRun) {
 		try {
-			execSync(`git rev-parse -q --verify refs/tags/${tag}`, { stdio: 'ignore' });
+			execSync(`git rev-parse -q --verify refs/tags/${tag}`, {
+				stdio: 'ignore'
+			});
 			tagExists = true;
-			} catch {
-				tagExists = false;
-			}
+		} catch {
+			tagExists = false;
+		}
 	}
 
 	if (tagExists) {
