@@ -33,7 +33,7 @@ export type NodeWithChildren<T extends object = object> = Node<T> & {
 /**
  * The complete accordion tree. This is a record of nodes with children
  */
-export type Tree<T extends object = object> = Record<
+export type TreeData<T extends object = object> = Record<
 	string,
 	NodeWithChildren<T>
 >;

@@ -31,7 +31,8 @@ const csrf = { csrf: { checkOrigin: true } };
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess: [vitePreprocess()],
+	preprocess: [vitePreprocess({ typeScript: true })],
+	extensions: ['.svelte'],
 
 	kit: {
 		adapter,

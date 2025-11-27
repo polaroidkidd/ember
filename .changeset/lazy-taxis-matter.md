@@ -1,5 +1,5 @@
 ---
-'@dle.dev/ember': patch
+'@dle.dev/ember': minor
 ---
 
 # Release Notes

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { MOCK_TREE } from '$lib/__mock__/data';
+	import { Tree } from '$lib/tree';
+	import type { NodeProps } from '$lib/types';
 
-	import Accordion from './tree.svelte';
-	import type { NodeProps } from './types';
+	import { MOCK_TREE } from '../../__mock__/data';
 
 	// Use a plain mutable tree variable so tests can bind to it.
 	// We deep-clone the mock to avoid shared mutation between tests.
@@ -53,7 +53,7 @@
 {/snippet}
 
 <div class="accordion">
-	<Accordion {node} bind:tree />
+	<Tree {node} bind:tree />
 </div>
 
 <style>

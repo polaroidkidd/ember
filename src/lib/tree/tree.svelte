@@ -1,24 +1,29 @@
-<script lang="ts" generics="N extends object = object">
+<script lang="ts" generics="SingleNode extends object">
 	import { onMount, type Snippet } from 'svelte';
 
 	import Self from './tree.svelte';
-	import type { Node, NodeActions, NodeWithChildren, Tree } from './types';
-	import type {} from './utils';
-	import { deleteNode, insertNode, updateNode } from './utils';
+	import type {
+		Node,
+		NodeActions,
+		NodeWithChildren,
+		TreeData
+	} from './tree.types';
+	import type {} from './tree.utils';
+	import { deleteNode, insertNode, updateNode } from './tree.utils';
 
 	type NodeProps<N extends object> = NodeWithChildren<N> & {
 		actions: NodeActions<N>;
 	};
 	type Props = {
-		tree: Tree<N>;
-		node: Snippet<[NodeProps<N>]>;
+		tree: TreeData<SingleNode>;
+		node: Snippet<[NodeProps<SingleNode>]>;
 		wrapperProps?: Record<string, unknown>;
 		wrapperElement?: keyof HTMLElementTagNameMap;
 	};
 
 	let {
 		node,
-		tree = $bindable<Tree<N>>({}),
+		tree = $bindable<TreeData<SingleNode>>({}),
 		wrapperProps,
 		wrapperElement
 	}: Props = $props();
@@ -29,7 +34,10 @@
 	// SSR and hydration
 	onMount(() => {
 		tree = Object.entries(tree).reduce(
-			(acc: Tree<N>, [key, value]: [key: string, value: Node<N>]) => {
+			(
+				acc: TreeData<SingleNode>,
+				[key, value]: [key: string, value: Node<SingleNode>]
+			) => {
 				acc[key] = {
 					...value,
 					expanded:
@@ -44,7 +52,7 @@
 		);
 	});
 
-	function toggle(node: NodeWithChildren<N>) {
+	function toggle(node: NodeWithChildren<SingleNode>) {
 		tree = updateNode({
 			node: {
 				...node,

@@ -9,10 +9,10 @@ describe('Accordion component (integration)', () => {
 		// @ts-ignore
 		globalThis.$state = (v: unknown) => v;
 
-		const Harness = (await import('./test-harness.svelte')).default;
+		const Harness = (await import('./test-harness.spec.svelte')).default;
 
 		// Import the mock tree synchronously so we can reference a known id
-		const { MOCK_TREE } = await import('$lib/__mock__/data');
+		const { MOCK_TREE } = await import('../../__mock__/data');
 		const nodeId = Object.keys(MOCK_TREE)[0];
 
 		render(Harness);
