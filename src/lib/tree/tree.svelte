@@ -1,10 +1,15 @@
 <script lang="ts" generics="SingleNode extends object = object">
 	import { onMount, type Snippet } from 'svelte';
 
-	import type { Node, NodeActions, NodeWithChildren, TreeData } from '../types';
 	import Self from './tree.svelte';
-	import type {} from './utils';
-	import { deleteNode, insertNode, updateNode } from './utils';
+	import type {
+		Node,
+		NodeActions,
+		NodeWithChildren,
+		TreeData
+	} from './tree.types';
+	import type {} from './tree.utils';
+	import { deleteNode, insertNode, updateNode } from './tree.utils';
 
 	type NodeProps<N extends object> = NodeWithChildren<N> & {
 		actions: NodeActions<N>;

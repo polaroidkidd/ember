@@ -150,7 +150,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<option value="update">Update</option>
 </select>
 <!-- The nodeProps type should contain the type deffinition of an individual node in the tree-->
-{#snippet node(content: NodeProps<object>)}
+{#snippet node(content: NodeProps<{ name: string; id: string }>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}
