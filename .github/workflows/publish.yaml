@@ -108,6 +108,6 @@ jobs:
           body: ${{ steps.prepare_release.outputs.body }}
           draft: false
           prerelease: false
-          files: "sources-${{ github.ref_name }}.tar.gz package-${{ github.ref_name }}.tgz"
+          files: 'sources-${{ github.ref_name }}.tar.gz package-${{ github.ref_name }}.tgz'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

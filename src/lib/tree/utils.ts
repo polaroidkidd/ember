@@ -2,7 +2,7 @@
  * Finds the path to the current id in a generic tree
  */
 
-import type { NodeWithChildren, Tree } from './types';
+import type { NodeWithChildren, TreeData } from './types';
 
 /**
  * Find path from root to node with given id.
@@ -14,7 +14,7 @@ export function getPathToNodeById<T extends object = object>({
 	tree
 }: {
 	id: string;
-	tree: Tree<T>;
+	tree: TreeData<T>;
 }): string[] {
 	if (!id) return [];
 
@@ -61,7 +61,7 @@ export function getNodeByPath<T extends object = object>({
 	tree
 }: {
 	path: string[];
-	tree: Tree<T>;
+	tree: TreeData<T>;
 }): NodeWithChildren<T> {
 	// Keep the original non-optional return type. If the path is invalid
 	// return a reasonable fallback (first root node) to preserve previous API.
@@ -110,8 +110,8 @@ export function deleteNodeByPath<T extends object = object>({
 	path
 }: {
 	path: string[];
-	tree: Tree<T>;
-}): Tree<T> {
+	tree: TreeData<T>;
+}): TreeData<T> {
 	if (!path || path.length === 0) return { ...tree };
 
 	// Helper recursive function that clones along the path and removes the target.
@@ -150,8 +150,8 @@ export function insertNode<T extends object = object>({
 }: {
 	node: NodeWithChildren<T>;
 	parent: NodeWithChildren<T>;
-	tree: Tree<T>;
-}): Tree<T> {
+	tree: TreeData<T>;
+}): TreeData<T> {
 	const path = getPathToNodeById({ id: parent.id, tree });
 	return insertNodeByPath({ tree, path, node });
 }
@@ -163,8 +163,8 @@ export function insertNodeByPath<T extends object = object>({
 }: {
 	node: NodeWithChildren<T>;
 	path: string[];
-	tree: Tree<T>;
-}): Tree<T> {
+	tree: TreeData<T>;
+}): TreeData<T> {
 	if (!path || path.length === 0) {
 		// insert at root
 		return { ...tree, [node.id]: node };
@@ -210,10 +210,10 @@ export function updateNodeByPath<T extends object = object>({
 	update,
 	path
 }: {
-	tree: Tree<T>;
+	tree: TreeData<T>;
 	update: NodeWithChildren<T>;
 	path: string[];
-}): Tree<T> {
+}): TreeData<T> {
 	if (!path || path.length === 0) return { ...tree };
 
 	const updateAt = (
@@ -246,9 +246,9 @@ export function updateNode<T extends object = object>({
 	node,
 	tree
 }: {
-	tree: Tree<T>;
+	tree: TreeData<T>;
 	node: NodeWithChildren<T>;
-}): Tree<T> {
+}): TreeData<T> {
 	const path = getPathToNodeById({ id: node.id, tree });
 	if (!path || path.length === 0) return tree;
 	return updateNodeByPath({ tree, update: node, path });
@@ -258,9 +258,9 @@ export function deleteNode<T extends object = object>({
 	node,
 	tree
 }: {
-	tree: Tree<T>;
+	tree: TreeData<T>;
 	node: NodeWithChildren<T>;
-}): Tree<T> {
+}): TreeData<T> {
 	const path = getPathToNodeById({ tree, id: node.id });
 	if (!path || path.length === 0) return tree;
 	return deleteNodeByPath({ tree, path });

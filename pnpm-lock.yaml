@@ -104,6 +104,9 @@ importers:
       svelte-highlight:
         specifier: ^7.8.4
         version: 7.8.4
+      svelte-lib-helpers:
+        specifier: ^0.4.31
+        version: 0.4.31
       tailwindcss:
         specifier: ^4.0.0
         version: 4.1.14
@@ -1953,6 +1956,9 @@ packages:
   json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
 
+  jsonc-parser@3.3.1:
+    resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
+
   jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
 
@@ -2682,6 +2688,10 @@ packages:
 
   svelte-highlight@7.8.4:
     resolution: {integrity: sha512-aVp+Q0hH9kI7PlSDrklmFTF4Uj7wYj7UGuqkREnkXlqpEffxr2g6esZcMMaTgECdg5rb2mJqM88+nwS10ecoTg==}
+
+  svelte-lib-helpers@0.4.31:
+    resolution: {integrity: sha512-wLhMXwfJymd4IHMFIs7/vEWv2fkzbITPvYEDd2brox3b28t6oxR+iQB7WdNKuKbn/bLaLzu8CJpZeRsYyhjUkw==}
+    hasBin: true
 
   svelte2tsx@0.7.44:
     resolution: {integrity: sha512-opuH+bCboss0/ncxnfAO+qt0IAprxc8OqwuC7otafWeO5CHjJ6UAAwvQmu/+xjpCSarX8pQKydXQuoJmbCDcTg==}
@@ -4663,6 +4673,8 @@ snapshots:
 
   json-stable-stringify-without-jsonify@1.0.1: {}
 
+  jsonc-parser@3.3.1: {}
+
   jsonfile@4.0.0:
     optionalDependencies:
       graceful-fs: 4.2.11
@@ -5291,6 +5303,10 @@ snapshots:
   svelte-highlight@7.8.4:
     dependencies:
       highlight.js: 11.11.1
+
+  svelte-lib-helpers@0.4.31:
+    dependencies:
+      jsonc-parser: 3.3.1
 
   svelte2tsx@0.7.44(svelte@5.39.8)(typescript@5.9.3):
     dependencies:

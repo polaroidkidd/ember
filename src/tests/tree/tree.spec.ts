@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { NodeWithChildren, Tree } from './types';
+import type { NodeWithChildren, TreeData } from '$lib/tree';
 import {
 	deleteNode,
 	deleteNodeByPath,
@@ -11,10 +11,10 @@ import {
 	insertNodeByPath,
 	updateNode,
 	updateNodeByPath
-} from './utils';
+} from '$lib/tree';
 
 describe('tree-utils', () => {
-	const tree: Tree = {
+	const tree: TreeData = {
 		a: {
 			id: 'a',
 			children: {
@@ -30,7 +30,7 @@ describe('tree-utils', () => {
 		e: { id: 'e' }
 	};
 
-	const createTree = (): Tree => JSON.parse(JSON.stringify(tree));
+	const createTree = (): TreeData => JSON.parse(JSON.stringify(tree));
 
 	it('getPathToNodeById finds correct path', () => {
 		const path = getPathToNodeById({ id: 'c', tree });

@@ -22,7 +22,7 @@ A small, headless, accessible and highly-customizable nestable tree component fo
 
 #### Implementation details
 
-- The component performs DFS-style path resolution to find nodes by id using `getPathToNodeById` and then performs structural cloning to update/insert/delete nodes immutably. See `src/lib/ember/tree/utils.ts` for the full implementations.
+- The component performs DFS-style path resolution to find nodes by id using `getPathToNodeById` and then performs structural cloning to update/insert/delete nodes immutably. See `src/lib/tree/utils.ts` for the full implementations.
 - `onMount` the component normalizes nodes to ensure `expanded` is set to a boolean.
 
 ## Development

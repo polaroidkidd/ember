@@ -7,9 +7,10 @@
 	import typescript from 'svelte-highlight/languages/typescript';
 	import github from 'svelte-highlight/styles/github';
 
-	import { MOCK_CODE_STRING, MOCK_TREE } from '$lib/__mock__/data';
-	import Tree from '$lib/ember/tree/tree.svelte';
-	import { type NodeProps } from '$lib/ember/tree/types';
+	import { Tree } from '$lib/tree';
+	import { type NodeProps } from '$lib/tree/types';
+
+	import { MOCK_CODE_STRING, MOCK_TREE } from '../__mock__/data';
 
 	let tree = $state(MOCK_TREE);
 	let action = $state('delete');

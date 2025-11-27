@@ -2,7 +2,7 @@
 	import { onMount, type Snippet } from 'svelte';
 
 	import Self from './tree.svelte';
-	import type { Node, NodeActions, NodeWithChildren, Tree } from './types';
+	import type { Node, NodeActions, NodeWithChildren, TreeData } from './types';
 	import type {} from './utils';
 	import { deleteNode, insertNode, updateNode } from './utils';
 
@@ -10,7 +10,7 @@
 		actions: NodeActions<N>;
 	};
 	type Props = {
-		tree: Tree<N>;
+		tree: TreeData<N>;
 		node: Snippet<[NodeProps<N>]>;
 		wrapperProps?: Record<string, unknown>;
 		wrapperElement?: keyof HTMLElementTagNameMap;
@@ -18,7 +18,7 @@
 
 	let {
 		node,
-		tree = $bindable<Tree<N>>({}),
+		tree = $bindable<TreeData<N>>({}),
 		wrapperProps,
 		wrapperElement
 	}: Props = $props();
@@ -29,7 +29,7 @@
 	// SSR and hydration
 	onMount(() => {
 		tree = Object.entries(tree).reduce(
-			(acc: Tree<N>, [key, value]: [key: string, value: Node<N>]) => {
+			(acc: TreeData<N>, [key, value]: [key: string, value: Node<N>]) => {
 				acc[key] = {
 					...value,
 					expanded:
