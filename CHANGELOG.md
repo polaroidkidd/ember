@@ -1,5 +1,11 @@
 # @dle.dev/ember
 
+## 1.1.1
+
+### Patch Changes
+
+- 1734920: Fix the release script
+
 ## 1.1.0
 
 ### Minor Changes
