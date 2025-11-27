@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 
-import type { NodeWithChildren, TreeData } from '$lib/tree';
 import {
 	deleteNode,
 	deleteNodeByPath,
@@ -12,6 +11,7 @@ import {
 	updateNode,
 	updateNodeByPath
 } from '$lib/tree';
+import type { NodeWithChildren, TreeData } from '$lib/types';
 
 describe('tree-utils', () => {
 	const tree: TreeData = {

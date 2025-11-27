@@ -2,7 +2,7 @@
  * Finds the path to the current id in a generic tree
  */
 
-import type { NodeWithChildren, TreeData } from './types';
+import type { NodeWithChildren, TreeData } from '../types';
 
 /**
  * Find path from root to node with given id.

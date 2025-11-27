@@ -8,7 +8,7 @@
 	import github from 'svelte-highlight/styles/github';
 
 	import { Tree } from '$lib/tree';
-	import { type NodeProps } from '$lib/tree/types';
+	import { type NodeProps } from '$lib/types';
 
 	import { MOCK_CODE_STRING, MOCK_TREE } from '../__mock__/data';
 

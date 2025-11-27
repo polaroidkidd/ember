@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Tree } from '$lib/tree';
-	import type { NodeProps } from '$lib/tree/types';
+	import type { NodeProps } from '$lib/types';
 
 	import { MOCK_TREE } from '../../__mock__/data';
 

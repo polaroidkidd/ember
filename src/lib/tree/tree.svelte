@@ -1,8 +1,8 @@
 <script lang="ts" generics="N extends object = object">
 	import { onMount, type Snippet } from 'svelte';
 
+	import type { Node, NodeActions, NodeWithChildren, TreeData } from '../types';
 	import Self from './tree.svelte';
-	import type { Node, NodeActions, NodeWithChildren, TreeData } from './types';
 	import type {} from './utils';
 	import { deleteNode, insertNode, updateNode } from './utils';
 
