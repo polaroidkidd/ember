@@ -19,9 +19,11 @@
 	"scripts": {
 		"dev": "vite dev",
 		"package": "svelte-kit sync && svelte-package && publint",
-		"gen:exports": "svelte-lib-helpers exports && pnpm format",
+		"gen:exports": "svelte-lib-helpers exports",
+		"gen:docspropvalue": "svelte-lib-helpers docspropvalue polaroidkidd/ember",
+		"gen:component-data-prop-value": "svelte-lib-helpers component-data-prop-value polaroidkidd/ember",
 		"copy:packagejson": "svelte-lib-helpers package",
-		"lib-helpers": "pnpm gen:docspropvalue && pnpm format && pnpm gen:exports && pnpm package",
+		"lib-helpers": "pnpm gen:component-data-prop-value && pnpm gen:docspropvalue && pnpm format && pnpm package && pnpm gen:exports && pnpm copy:packagejson && pnpm format",
 		"build": "vite build && npm run prepack",
 		"preview": "vite preview",
 		"preview:cf": "pnpm build && wrangler pages dev ./.svelte-kit/cloudflare",
@@ -40,7 +42,10 @@
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
+		"!dist/**/*.spec.*",
+		"src/lib",
+		"!src/lib/**/*.test.*",
+		"!src/lib/**/*.spec.*"
 	],
 	"sideEffects": [
 		"**/*.css"
@@ -120,6 +125,10 @@
 			"types": "./dist/types.d.ts",
 			"import": "./dist/types.js",
 			"default": "./dist/types.js"
+		},
+		"./test.svelte": {
+			"types": "./dist/test/test.svelte.d.ts",
+			"svelte": "./dist/test/test.svelte"
 		},
 		"./tree.svelte": {
 			"types": "./dist/tree/tree.svelte.d.ts",
