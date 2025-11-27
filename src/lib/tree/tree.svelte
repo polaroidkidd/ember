@@ -1,4 +1,4 @@
-<script lang="ts" generics="SingleNode extends object = object">
+<script lang="ts" generics="SingleNode extends object">
 	import { onMount, type Snippet } from 'svelte';
 
 	import Self from './tree.svelte';
