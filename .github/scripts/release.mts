@@ -19,7 +19,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
-const pkgPath = path.join(root, 'package.json');
+
+const pkgPath = path.join(root, '../../', 'package.json');
 
 const dryRun =
 	process.env.DRY_RUN === '1' || process.argv.includes('--dry-run');
