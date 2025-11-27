@@ -1,5 +1,19 @@
 # @dle.dev/ember
 
+## 1.1.0
+
+### Minor Changes
+
+- a55493c: # Release Notes
+
+  ## Update Docs
+  - `README.md` now reflects latest changes
+
+- 892ddd9: # Release Notes
+  - Update structure
+    - Tests are now separate from the lib folder
+    - Make usage of `svelte-lib-helpers`
+
 ## 1.0.0
 
 ### Major Changes
