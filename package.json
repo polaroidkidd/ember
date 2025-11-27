@@ -50,9 +50,6 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"type": "module",
 	"devDependencies": {
 		"@changesets/cli": "^2.26.0",
 		"@sveltejs/adapter-cloudflare": "^7.2.3",
@@ -116,6 +113,12 @@
 		"node": ">=24.7.0",
 		"pnpm": ">=10.0.0"
 	},
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"type": "module",
+	"peerDependencies": {
+		"svelte": "^5.0.0"
+	},
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
@@ -125,10 +128,6 @@
 			"types": "./dist/types.d.ts",
 			"import": "./dist/types.js",
 			"default": "./dist/types.js"
-		},
-		"./test.svelte": {
-			"types": "./dist/test/test.svelte.d.ts",
-			"svelte": "./dist/test/test.svelte"
 		},
 		"./tree.svelte": {
 			"types": "./dist/tree/tree.svelte.d.ts",

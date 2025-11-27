@@ -6,6 +6,6 @@
 	},
 	"props": [
 		["node", ""],
-		["tree", "$bindable<TreeData<N>>({"]
+		["tree", "$bindable<TreeData<SingleNode>>({"]
 	]
 }
