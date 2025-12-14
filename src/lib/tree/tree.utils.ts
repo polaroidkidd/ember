@@ -2,7 +2,7 @@
  * Finds the path to the current id in a generic tree
  */
 
-import type { NodeWithChildren, TreeData } from '../types';
+import type { NodeWithChildren, TreeData } from './tree.types';
 
 /**
  * Find path from root to node with given id.
@@ -114,7 +114,6 @@ export function deleteNodeByPath<T extends object = object>({
 }): TreeData<T> {
 	if (!path || path.length === 0) return { ...tree };
 
-	// Helper recursive function that clones along the path and removes the target.
 	const removeAt = (
 		map: Record<string, NodeWithChildren<T>>,
 		depth: number
@@ -122,22 +121,20 @@ export function deleteNodeByPath<T extends object = object>({
 		const key = path[depth];
 		if (!map[key]) return map; // nothing to delete
 
-		const cloned = { ...map };
-
 		if (depth === path.length - 1) {
 			// delete the target node
-			delete cloned[key];
-			return cloned;
+			delete map[key];
+			return map;
 		}
 
-		const child = cloned[key];
+		const child = map[key];
 		const childChildren = child.children ?? {};
 		const newChildren = removeAt(childChildren, depth + 1);
 		// if children didn't change, return original map to avoid unnecessary allocations
 		if (newChildren === childChildren) return map;
 
-		cloned[key] = { ...child, children: newChildren };
-		return cloned;
+		map[key] = { ...child, children: newChildren };
+		return map;
 	};
 
 	return removeAt(tree, 0);
@@ -170,7 +167,6 @@ export function insertNodeByPath<T extends object = object>({
 		return { ...tree, [node.id]: node };
 	}
 
-	// recursive helper that clones along the way
 	const insertAt = (
 		map: Record<string, NodeWithChildren<T>>,
 		depth: number
@@ -180,26 +176,25 @@ export function insertNodeByPath<T extends object = object>({
 		// create an empty node so we can continue. This mirrors previous behavior but
 		// avoids throwing.
 		const nodeAtKey = map[key];
-		const cloned = { ...map };
 
 		if (depth === path.length - 1) {
 			// insert into this node's children
 			const existing = nodeAtKey ?? ({ id: key } as NodeWithChildren<T>);
 			const children = { ...existing.children };
 			children[node.id] = node;
-			cloned[key] = { ...existing, children };
-			return cloned;
+			map[key] = { ...existing, children };
+			return map;
 		}
 
 		// need to descend
 		const nextMap = nodeAtKey?.children ?? {};
 		const newChildren = insertAt(nextMap, depth + 1);
 
-		cloned[key] = {
+		map[key] = {
 			...(nodeAtKey ?? ({ id: key } as NodeWithChildren<T>)),
 			children: newChildren
 		};
-		return cloned;
+		return map;
 	};
 
 	return insertAt(tree, 0);
@@ -223,20 +218,18 @@ export function updateNodeByPath<T extends object = object>({
 		const key = path[depth];
 		if (!map[key]) return map; // nothing to update at this branch
 
-		const cloned = { ...map };
-
 		if (depth === path.length - 1) {
-			cloned[key] = update;
-			return cloned;
+			map[key] = update;
+			return map;
 		}
 
-		const child = cloned[key];
+		const child = map[key];
 		const childChildren = child.children ?? {};
 		const newChildren = updateAt(childChildren, depth + 1);
 		if (newChildren === childChildren) return map;
 
-		cloned[key] = { ...child, children: newChildren };
-		return cloned;
+		map[key] = { ...child, children: newChildren };
+		return map;
 	};
 
 	return updateAt(tree, 0);
