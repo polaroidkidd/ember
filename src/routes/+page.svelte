@@ -7,8 +7,13 @@
 	import typescript from 'svelte-highlight/languages/typescript';
 	import github from 'svelte-highlight/styles/github';
 
-	import { Tree } from '$lib/tree';
-	import { type NodeProps } from '$lib/types';
+	import {
+		deleteNode,
+		insertNode,
+		type NodeWithChildren,
+		Tree,
+		updateNode
+	} from '$lib/tree';
 
 	import { MOCK_CODE_STRING, MOCK_TREE } from '../__mock__/data';
 
@@ -99,8 +104,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	right node, but this implementation uses a record for O(1) access. Use this
 	implementation for example when you have to render a large and deeply nested
 	file tree. Additionally this library provides insert, update and delete
-	actions to the node snippet as helpers. They are <strong>not required</strong>
-	to use the component, but they make it easier to work with the tree.
+	operations out of the box.
 </p>
 
 <p class="mb-2">The component expects to arguments</p>
@@ -150,7 +154,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<option value="update">Update</option>
 </select>
 <!-- The nodeProps type should contain the type deffinition of an individual node in the tree-->
-{#snippet node(content: NodeProps<{ name: string; id: string }>)}
+{#snippet node(content: NodeWithChildren<{ name: string; id: string }>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}
@@ -179,7 +183,13 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 			)}
 			onclick={(e) => {
 				e.preventDefault();
-				content.actions.toggle();
+				updateNode({
+					node: {
+						...content,
+						expanded: !content.expanded
+					},
+					tree
+				});
 			}}
 		>
 			<div
@@ -202,18 +212,19 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 			type="button"
 			onclick={() => {
 				if (action === 'insert') {
-					content.actions.insert({
-						id: crypto.randomUUID(),
-						name: 'New Node',
-						children: {}
+					insertNode({
+						node: {
+							id: crypto.randomUUID(),
+							name: 'New Node',
+							children: {}
+						},
+						parent: content,
+						tree
 					});
 				} else if (action === 'update') {
-					content.actions.update({
-						...content,
-						name: 'Updated Node'
-					});
+					updateNode({ node: { ...content, name: 'Updated Node' }, tree });
 				} else if (action === 'delete') {
-					content.actions.delete();
+					deleteNode({ node: content, tree });
 				}
 			}}>{action}</button
 		>
