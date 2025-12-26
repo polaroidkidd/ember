@@ -104,7 +104,6 @@ export function updateNode<T extends object = object>({
 	node: NodeWithChildren<T>;
 	tree: TreeData<T>;
 }) {
-	console.info('node to update: ', node.name);
 	const stack: {
 		map: Record<string, NodeWithChildren<T>>;
 		keys: string[];
