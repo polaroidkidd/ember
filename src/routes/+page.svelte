@@ -198,7 +198,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 		<h1 class="my-auto">{content.name}</h1>
 
 		<button
-			class="hover:bg-primary-100flex-col ml-auto flex cursor-pointer rounded-sm border px-4 py-2"
+			class="ml-auto flex cursor-pointer flex-col rounded-sm border px-4 py-2 hover:bg-primary-100"
 			type="button"
 			onclick={() => {
 				if (action === 'insert') {
