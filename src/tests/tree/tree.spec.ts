@@ -58,5 +58,6 @@ describe('tree-utils', () => {
 		});
 
 		expect(tree.a.children!.b.foo).toBe(123);
+		expect(tree.a.children!.b.children!.c).toBeDefined();
 	});
 });
