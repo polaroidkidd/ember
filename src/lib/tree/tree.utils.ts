@@ -30,7 +30,7 @@ export function insertNode<T extends object = object>({
 		const key = top.keys[top.idx++];
 
 		// If this is the target node, perform the operation
-		if (key === parent.id) {
+		if (top.map[key] === parent) {
 			top.map[key].children = {
 				...top.map[key].children,
 				[node.id]: node
@@ -79,7 +79,7 @@ export function deleteNode<T extends object = object>({
 		const key = top.keys[top.idx++];
 
 		// If this is the target node, perform the operation
-		if (key === node.id) {
+		if (top.map[key] === node) {
 			delete top.map[key];
 			return;
 		}
