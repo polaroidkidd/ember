@@ -53,7 +53,7 @@
 	});
 
 	function toggle(node: NodeWithChildren<SingleNode>) {
-		tree = updateNode({
+		updateNode({
 			node: {
 				...node,
 				expanded: !node.expanded
@@ -70,14 +70,14 @@
 			actions: {
 				toggle: () => toggle(content),
 				update: (node) => {
-					tree = updateNode({ node, tree });
+					updateNode({ node, tree });
 				},
 				delete: () => {
-					tree = deleteNode({ node: content, tree });
+					deleteNode({ node: content, tree });
 				},
 
 				insert: (node) => {
-					tree = insertNode({
+					insertNode({
 						tree,
 						parent: content,
 						node

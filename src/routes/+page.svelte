@@ -114,7 +114,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 
 <p class="mb-2">The tree structure it expects is as follows</p>
 
-<div class="mt-10 mb-10 overflow-hidden rounded-md border-[1px] shadow-2xl">
+<div class="mt-10 mb-10 overflow-hidden rounded-md border shadow-2xl">
 	<Highlight language={typescript} code={exampleTree} />
 </div>
 <p class="mb-2">
@@ -158,7 +158,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 		transition:fly
 		class={clsx(
 			'nodes-baseline mb-2 inline-flex',
-			'justify-baseline rounded-2xl border-[1px]',
+			'justify-baseline  border',
 			'border-primary-200 bg-primary-50 p-4',
 			'align-baseline'
 		)}
@@ -167,11 +167,11 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 			{disabled}
 			type="button"
 			class={clsx(
-				'cursor-pointer',
-				'mr-2 rounded-full border-[1px]',
+				'mr-2 rounded border',
 				{
 					' bg-primary-100 hover:bg-primary-200': !disabled,
-					'cursor-not-allowed bg-gray-200': disabled
+					'cursor-not-allowed bg-gray-200': disabled,
+					'cursor-pointer': !disabled
 				},
 
 				'px-2 ',
@@ -184,16 +184,21 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 		>
 			<div
 				class={clsx('m-x-1 my-2 h-4 w-4 cursor-pointer transition-all  ', {
-					'rotate-90': content.expanded
+					'rotate-90': content.expanded,
+					'cursor-not-allowed': disabled
 				})}
 			>
-				<img src="/chevron.svg" alt="Chevron icon" />
+				<img
+					src="/chevron.svg"
+					alt="Chevron icon"
+					class={clsx('mt-1', { 'cursor-not-allowed': disabled })}
+				/>
 			</div>
 		</button>
-		<h1>{content.name}</h1>
+		<h1 class="my-auto">{content.name}</h1>
 
 		<button
-			class="hover:bg-primary-100flex-col ml-2 flex cursor-pointer rounded-sm border-[1px] px-4 py-2"
+			class="ml-auto flex cursor-pointer flex-col rounded-sm border px-4 py-2 hover:bg-primary-100"
 			type="button"
 			onclick={() => {
 				if (action === 'insert') {
@@ -219,12 +224,12 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	{node}
 	bind:tree
 	wrapperProps={{
-		class: 'ml-6'
+		class: 'ml-6 grid'
 	}}
 	wrapperElement="span"
 />
 <h3 class="mt-5 text-xl">Working Code</h3>
-<div class="mt-10 overflow-hidden rounded-md border-[1px] shadow-2xl">
+<div class="mt-10 overflow-hidden rounded-md border shadow-2xl">
 	<Highlight language={typescript} code={MOCK_CODE_STRING} />
 </div>
 
