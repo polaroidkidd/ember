@@ -3,7 +3,6 @@
 
 	import Self from './tree.svelte';
 	import type { Node, TreeData } from './tree.types';
-	import type {} from './tree.utils';
 
 	type Props = {
 		tree: TreeData<SingleNode>;
