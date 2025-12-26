@@ -126,10 +126,8 @@ export function updateNode<T extends object = object>({
 
 		// If this is the target node, perform the operation
 		if (key === node.id) {
-			top.map[key] = {
-				...top.map[key],
-				...node
-			};
+			top.map[key] = node;
+
 			return;
 		}
 		// If the node has children, push them onto the stack for further processing
