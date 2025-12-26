@@ -30,6 +30,8 @@ export function insertNode<T extends object = object>({
 		const key = top.keys[top.idx++];
 
 		// If this is the target node, perform the operation
+		// Uses reference equality to ensure we operate on the exact node from the tree
+		// The parent parameter must be a direct reference to a node object from the tree
 		if (top.map[key] === parent) {
 			top.map[key].children = {
 				...top.map[key].children,
@@ -79,6 +81,8 @@ export function deleteNode<T extends object = object>({
 		const key = top.keys[top.idx++];
 
 		// If this is the target node, perform the operation
+		// Uses reference equality to ensure we operate on the exact node from the tree
+		// The node parameter must be a direct reference to a node object from the tree
 		if (top.map[key] === node) {
 			delete top.map[key];
 			return;
