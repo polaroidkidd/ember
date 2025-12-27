@@ -2,11 +2,11 @@
 	import { onMount, type Snippet } from 'svelte';
 
 	import Self from './tree.svelte';
-	import type { Node, TreeData } from './tree.types';
+	import type { Node, NodeWithChildren, TreeData } from './tree.types';
 
 	type Props = {
 		tree: TreeData<SingleNode>;
-		node: Snippet<[SingleNode]>;
+		node: Snippet<[NodeWithChildren<SingleNode>]>;
 		wrapperProps?: Record<string, unknown>;
 		wrapperElement?: keyof HTMLElementTagNameMap;
 	};
