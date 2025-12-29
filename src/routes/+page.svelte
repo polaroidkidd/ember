@@ -2,7 +2,6 @@
 
 <script lang="ts">
 	import clsx from 'clsx';
-	import { fly } from 'svelte/transition';
 	import Highlight from 'svelte-highlight';
 	import typescript from 'svelte-highlight/languages/typescript';
 	import github from 'svelte-highlight/styles/github';
@@ -159,7 +158,6 @@ export type Tree<T extends object = object> = Record<string, Node<T>>;
 		content.children && Object.keys(content.children).length > 0
 	)}
 	<div
-		transition:fly
 		class={clsx(
 			'nodes-baseline mb-2 inline-flex',
 			'justify-baseline  border',
@@ -196,7 +194,7 @@ export type Tree<T extends object = object> = Record<string, Node<T>>;
 				class={clsx(
 					'm-x-1 my-3 h-4 w-4  origin-center cursor-pointer transition-all',
 					{
-						'rotate-90': content.expanded,
+						'rotate-90': !disabled && content.expanded,
 						'cursor-not-allowed': disabled
 					}
 				)}
