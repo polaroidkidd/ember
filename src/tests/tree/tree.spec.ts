@@ -1,11 +1,15 @@
 import { cloneDeep } from 'lodash-es';
 import { describe, expect, it } from 'vitest';
 
-import { deleteNode, insertNode, updateNode } from '$lib/tree/tree.utils';
-import type { Node, Tree } from '$lib/types';
+import {
+	deleteNode,
+	insertNode,
+	type Node,
+	type TreeData,
+	updateNode} from '$lib';
 
 describe('tree-utils', () => {
-	const mockTree: Tree = {
+	const mockTree: TreeData = {
 		a: {
 			id: 'a',
 			children: {
@@ -21,7 +25,7 @@ describe('tree-utils', () => {
 		e: { id: 'e' }
 	};
 
-	const createTree = (): Tree => cloneDeep(mockTree);
+	const createTree = (): TreeData => cloneDeep(mockTree);
 
 	it('should remove the root node', () => {
 		const tree = createTree();
