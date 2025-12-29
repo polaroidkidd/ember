@@ -1,5 +1,11 @@
 # @dle.dev/ember
 
+## 3.1.1
+
+### Patch Changes
+
+- 09c7482: Add msising tree utils exports
+
 ## 3.1.0
 
 ### Minor Changes
