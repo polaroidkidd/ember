@@ -17,6 +17,7 @@ export type Node<T extends object = object> = T & {
 	 * if a node is expanded in the node snippet
 	 */
 	expanded?: boolean;
+	children?: Record<string, Node<T>>;
 	/*
 	 * Any other properties you want to add to the node
 	 */
@@ -24,46 +25,6 @@ export type Node<T extends object = object> = T & {
 };
 
 /**
- * A node which can have children
- */
-export type NodeWithChildren<T extends object = object> = Node<T> & {
-	children?: Record<string, NodeWithChildren<T>>;
-};
-
-/**
  * The complete accordion tree. This is a record of nodes with children
  */
-export type TreeData<T extends object = object> = Record<
-	string,
-	NodeWithChildren<T>
->;
-
-/**
- * Actions that can be performed on a node.
- */
-export type NodeActions<N extends object> = {
-	/**
-	 * Toggles the collapse state of the node.
-	 */
-	toggle: () => void;
-	/**
-	 * Inserts a new node as a child of the specified parent node.
-	 * @param parentNode
-	 * @param newNode
-	 */
-	insert: (node: Node<N>) => void;
-	/**
-	 * Deletes the node from the tree.
-	 * @param node
-	 */
-	delete: () => void;
-	/**
-	 * Updates the node in the tree.
-	 * @param node
-	 */
-	update: (node: NodeWithChildren<N>) => void;
-};
-
-export type NodeProps<N extends object> = NodeWithChildren<N> & {
-	actions: NodeActions<N>;
-};
+export type Tree<T extends object = object> = Record<string, Node<T>>;

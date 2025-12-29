@@ -2,10 +2,10 @@ import { cloneDeep } from 'lodash-es';
 import { describe, expect, it } from 'vitest';
 
 import { deleteNode, insertNode, updateNode } from '$lib/tree/tree.utils';
-import type { NodeWithChildren, TreeData } from '$lib/types';
+import type { Node, Tree } from '$lib/types';
 
 describe('tree-utils', () => {
-	const mockTree: TreeData = {
+	const mockTree: Tree = {
 		a: {
 			id: 'a',
 			children: {
@@ -21,7 +21,7 @@ describe('tree-utils', () => {
 		e: { id: 'e' }
 	};
 
-	const createTree = (): TreeData => cloneDeep(mockTree);
+	const createTree = (): Tree => cloneDeep(mockTree);
 
 	it('should remove the root node', () => {
 		const tree = createTree();
@@ -37,9 +37,36 @@ describe('tree-utils', () => {
 		expect(tree.a.children!.d).toBeDefined();
 	});
 
+	it('should remove a nested leaf node', () => {
+		const tree = createTree();
+		deleteNode({ tree, node: tree.a.children!.b.children!.c });
+		expect(tree.a.children!.b.children!.c).toBeUndefined();
+		// sibling branches untouched
+		expect(tree.a.children!.d).toBeDefined();
+	});
+
+	it('should remove a root node with children (subtree)', () => {
+		const tree = createTree();
+		deleteNode({ tree, node: tree.a });
+		expect(tree.a).toBeUndefined();
+		expect(tree.e).toBeDefined();
+	});
+
+	it('should not throw when deleting a node that is not in the tree', () => {
+		const tree = createTree();
+		const snapshot = cloneDeep(tree);
+
+		expect(() =>
+			deleteNode({ tree, node: { id: 'does-not-exist' } as Node })
+		).not.toThrow();
+
+		// ensure tree unchanged
+		expect(tree).toEqual(snapshot);
+	});
+
 	it('should add a node as a child of a given parent', () => {
 		const tree = createTree();
-		const node: NodeWithChildren = { id: 'x' };
+		const node: Node = { id: 'x' };
 		insertNode({
 			tree,
 			parent: tree.a.children!.d,
@@ -48,15 +75,55 @@ describe('tree-utils', () => {
 		expect(tree.a.children!.d.children!.x.id).toBe('x');
 	});
 
+	it('should create the children map when inserting into a parent without children', () => {
+		const tree = createTree();
+		const node: Node = { id: 'y' };
+
+		// tree.e has no children in the fixture
+		insertNode({
+			tree,
+			parent: tree.e,
+			node
+		});
+
+		expect(tree.e.children).toBeDefined();
+		expect(tree.e.children!.y.id).toBe('y');
+	});
+
 	it('should update a node', () => {
 		const tree = createTree();
 
-		const updated: NodeWithChildren = { id: 'b', foo: 123 };
+		const updated: Node = { id: 'b', foo: 123 };
 		updateNode({
 			tree,
 			node: updated
 		});
 
 		expect(tree.a.children!.b.foo).toBe(123);
+	});
+
+	it('should update a root node', () => {
+		const tree = createTree();
+
+		updateNode({
+			tree,
+			node: { id: 'e', foo: 'bar' }
+		});
+
+		expect(tree.e.foo).toBe('bar');
+	});
+
+	it('should not throw when updating a node that does not exist', () => {
+		const tree = createTree();
+		const snapshot = cloneDeep(tree);
+
+		expect(() =>
+			updateNode({
+				tree,
+				node: { id: 'does-not-exist', foo: 999 } as Node
+			})
+		).not.toThrow();
+
+		expect(tree).toEqual(snapshot);
 	});
 });

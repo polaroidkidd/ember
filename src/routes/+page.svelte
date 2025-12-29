@@ -7,8 +7,13 @@
 	import typescript from 'svelte-highlight/languages/typescript';
 	import github from 'svelte-highlight/styles/github';
 
-	import { Tree } from '$lib/tree';
-	import { type NodeProps } from '$lib/types';
+	import {
+		deleteNode,
+		insertNode,
+		type Node,
+		Tree,
+		updateNode
+	} from '$lib/tree';
 
 	import { MOCK_CODE_STRING, MOCK_TREE } from '../__mock__/data';
 
@@ -43,13 +48,13 @@ export type Node<T extends object = object> = T & {
 /**
  * A node which can have children
  */
-export type NodeWithChildren<T extends object = object> = Node<T> & {
-	children?: Record<string, NodeWithChildren<T>>;
+export type Node<T extends object = object> = Node<T> & {
+	children?: Record<string, Node<T>>;
 };
 /**
  * The complete accordion tree. This is a record of nodes with children
  */
-export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>>;
+export type Tree<T extends object = object> = Record<string, Node<T>>;
 `;
 
 	function copyToClipboard(anchor: string) {
@@ -99,11 +104,10 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	right node, but this implementation uses a record for O(1) access. Use this
 	implementation for example when you have to render a large and deeply nested
 	file tree. Additionally this library provides insert, update and delete
-	actions to the node snippet as helpers. They are <strong>not required</strong>
-	to use the component, but they make it easier to work with the tree.
+	operations out of the box.
 </p>
 
-<p class="mb-2">The component expects to arguments</p>
+<p class="mb-2">The component expects two arguments</p>
 <ol class="ml-12 list-outside list-decimal py-4">
 	<li>A snippet, which renders each entry</li>
 	<li>
@@ -149,8 +153,8 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<option value="insert">Insert</option>
 	<option value="update">Update</option>
 </select>
-<!-- The nodeProps type should contain the type deffinition of an individual node in the tree-->
-{#snippet node(content: NodeProps<{ name: string; id: string }>)}
+<!-- The nodeProps type should contain the type definition of an individual node in the tree-->
+{#snippet node(content: Node<{ name: string; id: string }>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}
@@ -179,19 +183,28 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 			)}
 			onclick={(e) => {
 				e.preventDefault();
-				content.actions.toggle();
+				updateNode({
+					node: {
+						...content,
+						expanded: !content.expanded
+					},
+					tree
+				});
 			}}
 		>
 			<div
-				class={clsx('m-x-1 my-2 h-4 w-4 cursor-pointer transition-all  ', {
-					'rotate-90': content.expanded,
-					'cursor-not-allowed': disabled
-				})}
+				class={clsx(
+					'm-x-1 my-3 h-4 w-4  origin-center cursor-pointer transition-all',
+					{
+						'rotate-90': content.expanded,
+						'cursor-not-allowed': disabled
+					}
+				)}
 			>
 				<img
 					src="/chevron.svg"
 					alt="Chevron icon"
-					class={clsx('mt-1', { 'cursor-not-allowed': disabled })}
+					class={clsx('h-4 w-4', { 'cursor-not-allowed': disabled })}
 				/>
 			</div>
 		</button>
@@ -202,18 +215,19 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 			type="button"
 			onclick={() => {
 				if (action === 'insert') {
-					content.actions.insert({
-						id: crypto.randomUUID(),
-						name: 'New Node',
-						children: {}
+					insertNode({
+						node: {
+							id: crypto.randomUUID(),
+							name: 'New Node',
+							children: {}
+						},
+						parent: content,
+						tree
 					});
 				} else if (action === 'update') {
-					content.actions.update({
-						...content,
-						name: 'Updated Node'
-					});
+					updateNode({ node: { ...content, name: 'Updated Node' }, tree });
 				} else if (action === 'delete') {
-					content.actions.delete();
+					deleteNode({ node: content, tree });
 				}
 			}}>{action}</button
 		>

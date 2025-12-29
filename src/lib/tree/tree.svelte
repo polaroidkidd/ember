@@ -2,28 +2,18 @@
 	import { onMount, type Snippet } from 'svelte';
 
 	import Self from './tree.svelte';
-	import type {
-		Node,
-		NodeActions,
-		NodeWithChildren,
-		TreeData
-	} from './tree.types';
-	import type {} from './tree.utils';
-	import { deleteNode, insertNode, updateNode } from './tree.utils';
+	import type { Node, Tree } from './tree.types';
 
-	type NodeProps<N extends object> = NodeWithChildren<N> & {
-		actions: NodeActions<N>;
-	};
 	type Props = {
-		tree: TreeData<SingleNode>;
-		node: Snippet<[NodeProps<SingleNode>]>;
+		tree: Tree<SingleNode>;
+		node: Snippet<[SingleNode]>;
 		wrapperProps?: Record<string, unknown>;
 		wrapperElement?: keyof HTMLElementTagNameMap;
 	};
 
 	let {
 		node,
-		tree = $bindable<TreeData<SingleNode>>({}),
+		tree = $bindable<Tree<SingleNode>>({}),
 		wrapperProps,
 		wrapperElement
 	}: Props = $props();
@@ -35,7 +25,7 @@
 	onMount(() => {
 		tree = Object.entries(tree).reduce(
 			(
-				acc: TreeData<SingleNode>,
+				acc: Tree<SingleNode>,
 				[key, value]: [key: string, value: Node<SingleNode>]
 			) => {
 				acc[key] = {
@@ -51,40 +41,11 @@
 			{}
 		);
 	});
-
-	function toggle(node: NodeWithChildren<SingleNode>) {
-		updateNode({
-			node: {
-				...node,
-				expanded: !node.expanded
-			},
-			tree
-		});
-	}
 </script>
 
 {#each Object.entries(tree) as [id, content] (id)}
 	<svelte:element this={wrapperElement ?? 'div'} {...wrapperProps}>
-		{@render node({
-			...content,
-			actions: {
-				toggle: () => toggle(content),
-				update: (node) => {
-					updateNode({ node, tree });
-				},
-				delete: () => {
-					deleteNode({ node: content, tree });
-				},
-
-				insert: (node) => {
-					insertNode({
-						tree,
-						parent: content,
-						node
-					});
-				}
-			}
-		})}
+		{@render node(content)}
 
 		{#if content.children && content.expanded}
 			<Self

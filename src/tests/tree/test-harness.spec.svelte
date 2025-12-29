@@ -1,6 +1,11 @@
 <script lang="ts">
-	import { Tree } from '$lib/tree';
-	import type { NodeProps } from '$lib/types';
+	import {
+		deleteNode,
+		insertNode,
+		type Node,
+		Tree,
+		updateNode
+	} from '$lib/tree';
 
 	import { MOCK_TREE } from '../../__mock__/data';
 
@@ -13,11 +18,19 @@
 	// This keeps the harness minimal while allowing deterministic tests.
 </script>
 
-{#snippet node(content: NodeProps<object>)}
+{#snippet node(content: Node<object>)}
 	<div data-testid={`node-${content.id}`} class="node">
 		<button
 			data-testid={`toggle-${content.id}`}
-			onclick={() => content.actions.toggle()}
+			onclick={() => {
+				updateNode({
+					node: {
+						...content,
+						expanded: !content.expanded
+					},
+					tree
+				});
+			}}
 		>
 			toggle
 		</button>
@@ -26,10 +39,14 @@
 		<button
 			data-testid={`insert-${content.id}`}
 			onclick={() =>
-				content.actions.insert({
-					id: `${content.id}-new`,
-					name: 'Inserted Node',
-					children: {}
+				insertNode({
+					node: {
+						id: `${content.id}-new`,
+						name: 'Inserted Node',
+						children: {}
+					},
+					parent: content,
+					tree
 				})}
 		>
 			insert
@@ -38,14 +55,14 @@
 		<button
 			data-testid={`update-${content.id}`}
 			onclick={() =>
-				content.actions.update({ ...content, name: 'Updated Node' })}
+				updateNode({ node: { ...content, name: 'Updated Node' }, tree })}
 		>
 			update
 		</button>
 
 		<button
 			data-testid={`delete-${content.id}`}
-			onclick={() => content.actions.delete()}
+			onclick={() => deleteNode({ node: content, tree })}
 		>
 			delete
 		</button>
