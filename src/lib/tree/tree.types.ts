@@ -27,4 +27,4 @@ export type Node<T extends object = object> = T & {
 /**
  * The complete accordion tree. This is a record of nodes with children
  */
-export type Tree<T extends object = object> = Record<string, Node<T>>;
+export type TreeData<T extends object = object> = Record<string, Node<T>>;

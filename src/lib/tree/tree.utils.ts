@@ -1,4 +1,4 @@
-import type { Node, Tree } from './tree.types';
+import type { Node, TreeData } from './tree.types';
 
 export function insertNode<T extends object = object>({
 	node,
@@ -7,7 +7,7 @@ export function insertNode<T extends object = object>({
 }: {
 	node: Node<T>;
 	parent: Node<T>;
-	tree: Tree<T>;
+	tree: TreeData<T>;
 }) {
 	const stack: {
 		map: Record<string, Node<T>>;
@@ -55,7 +55,7 @@ export function deleteNode<T extends object = object>({
 	node,
 	tree
 }: {
-	tree: Tree<T>;
+	tree: TreeData<T>;
 	node: Node<T>;
 }) {
 	const stack: {
@@ -102,7 +102,7 @@ export function updateNode<T extends object = object>({
 	tree
 }: {
 	node: Node<T>;
-	tree: Tree<T>;
+	tree: TreeData<T>;
 }) {
 	const stack: {
 		map: Record<string, Node<T>>;
