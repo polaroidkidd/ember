@@ -1,5 +1,11 @@
 # @dle.dev/ember
 
+## 3.2.0
+
+### Minor Changes
+
+- 5648f75: Add transition options
+
 ## 3.1.1
 
 ### Patch Changes
