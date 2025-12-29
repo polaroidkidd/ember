@@ -107,7 +107,7 @@ export type Tree<T extends object = object> = Record<string, Node<T>>;
 	operations out of the box.
 </p>
 
-<p class="mb-2">The component expects to arguments</p>
+<p class="mb-2">The component expects two arguments</p>
 <ol class="ml-12 list-outside list-decimal py-4">
 	<li>A snippet, which renders each entry</li>
 	<li>
@@ -153,7 +153,7 @@ export type Tree<T extends object = object> = Record<string, Node<T>>;
 	<option value="insert">Insert</option>
 	<option value="update">Update</option>
 </select>
-<!-- The nodeProps type should contain the type deffinition of an individual node in the tree-->
+<!-- The nodeProps type should contain the type definition of an individual node in the tree-->
 {#snippet node(content: Node<{ name: string; id: string }>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
@@ -193,15 +193,18 @@ export type Tree<T extends object = object> = Record<string, Node<T>>;
 			}}
 		>
 			<div
-				class={clsx('m-x-1 my-2 h-4 w-4 cursor-pointer transition-all  ', {
-					'rotate-90': content.expanded,
-					'cursor-not-allowed': disabled
-				})}
+				class={clsx(
+					'm-x-1 my-3 h-4 w-4  origin-center cursor-pointer transition-all',
+					{
+						'rotate-90': content.expanded,
+						'cursor-not-allowed': disabled
+					}
+				)}
 			>
 				<img
 					src="/chevron.svg"
 					alt="Chevron icon"
-					class={clsx('mt-1', { 'cursor-not-allowed': disabled })}
+					class={clsx('h-4 w-4', { 'cursor-not-allowed': disabled })}
 				/>
 			</div>
 		</button>

@@ -1,7 +1,11 @@
 <script lang="ts">
-	import { Tree } from '$lib/tree';
-	import { type Node } from '$lib/tree/tree.types';
-	import { deleteNode, insertNode, updateNode } from '$lib/tree/tree.utils';
+	import {
+		deleteNode,
+		insertNode,
+		type Node,
+		Tree,
+		updateNode
+	} from '$lib/tree';
 
 	import { MOCK_TREE } from '../../__mock__/data';
 
