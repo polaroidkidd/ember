@@ -2,10 +2,10 @@
 	import { onMount, type Snippet } from 'svelte';
 
 	import Self from './tree.svelte';
-	import type { Node, TreeData } from './tree.types';
+	import type { Node, Tree } from './tree.types';
 
 	type Props = {
-		tree: TreeData<SingleNode>;
+		tree: Tree<SingleNode>;
 		node: Snippet<[SingleNode]>;
 		wrapperProps?: Record<string, unknown>;
 		wrapperElement?: keyof HTMLElementTagNameMap;
@@ -13,7 +13,7 @@
 
 	let {
 		node,
-		tree = $bindable<TreeData<SingleNode>>({}),
+		tree = $bindable<Tree<SingleNode>>({}),
 		wrapperProps,
 		wrapperElement
 	}: Props = $props();
@@ -25,7 +25,7 @@
 	onMount(() => {
 		tree = Object.entries(tree).reduce(
 			(
-				acc: TreeData<SingleNode>,
+				acc: Tree<SingleNode>,
 				[key, value]: [key: string, value: Node<SingleNode>]
 			) => {
 				acc[key] = {

@@ -10,7 +10,7 @@
 	import {
 		deleteNode,
 		insertNode,
-		type NodeWithChildren,
+		type Node,
 		Tree,
 		updateNode
 	} from '$lib/tree';
@@ -48,13 +48,13 @@ export type Node<T extends object = object> = T & {
 /**
  * A node which can have children
  */
-export type NodeWithChildren<T extends object = object> = Node<T> & {
-	children?: Record<string, NodeWithChildren<T>>;
+export type Node<T extends object = object> = Node<T> & {
+	children?: Record<string, Node<T>>;
 };
 /**
  * The complete accordion tree. This is a record of nodes with children
  */
-export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>>;
+export type Tree<T extends object = object> = Record<string, Node<T>>;
 `;
 
 	function copyToClipboard(anchor: string) {
@@ -154,7 +154,7 @@ export type Tree<T extends object = object> = Record<string, NodeWithChildren<T>
 	<option value="update">Update</option>
 </select>
 <!-- The nodeProps type should contain the type deffinition of an individual node in the tree-->
-{#snippet node(content: NodeWithChildren<{ name: string; id: string }>)}
+{#snippet node(content: Node<{ name: string; id: string }>)}
 	{@const disabled = !(
 		content.children && Object.keys(content.children).length > 0
 	)}

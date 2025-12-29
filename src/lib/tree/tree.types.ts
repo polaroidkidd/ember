@@ -17,6 +17,7 @@ export type Node<T extends object = object> = T & {
 	 * if a node is expanded in the node snippet
 	 */
 	expanded?: boolean;
+	children?: Record<string, Node<T>>;
 	/*
 	 * Any other properties you want to add to the node
 	 */
@@ -24,16 +25,6 @@ export type Node<T extends object = object> = T & {
 };
 
 /**
- * A node which can have children
- */
-export type NodeWithChildren<T extends object = object> = Node<T> & {
-	children?: Record<string, NodeWithChildren<T>>;
-};
-
-/**
  * The complete accordion tree. This is a record of nodes with children
  */
-export type TreeData<T extends object = object> = Record<
-	string,
-	NodeWithChildren<T>
->;
+export type Tree<T extends object = object> = Record<string, Node<T>>;

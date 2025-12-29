@@ -2,10 +2,10 @@ import { cloneDeep } from 'lodash-es';
 import { describe, expect, it } from 'vitest';
 
 import { deleteNode, insertNode, updateNode } from '$lib/tree/tree.utils';
-import type { NodeWithChildren, TreeData } from '$lib/types';
+import type { Node, Tree } from '$lib/types';
 
 describe('tree-utils', () => {
-	const mockTree: TreeData = {
+	const mockTree: Tree = {
 		a: {
 			id: 'a',
 			children: {
@@ -21,7 +21,7 @@ describe('tree-utils', () => {
 		e: { id: 'e' }
 	};
 
-	const createTree = (): TreeData => cloneDeep(mockTree);
+	const createTree = (): Tree => cloneDeep(mockTree);
 
 	it('should remove the root node', () => {
 		const tree = createTree();
@@ -57,7 +57,7 @@ describe('tree-utils', () => {
 		const snapshot = cloneDeep(tree);
 
 		expect(() =>
-			deleteNode({ tree, node: { id: 'does-not-exist' } as NodeWithChildren })
+			deleteNode({ tree, node: { id: 'does-not-exist' } as Node })
 		).not.toThrow();
 
 		// ensure tree unchanged
@@ -66,7 +66,7 @@ describe('tree-utils', () => {
 
 	it('should add a node as a child of a given parent', () => {
 		const tree = createTree();
-		const node: NodeWithChildren = { id: 'x' };
+		const node: Node = { id: 'x' };
 		insertNode({
 			tree,
 			parent: tree.a.children!.d,
@@ -77,7 +77,7 @@ describe('tree-utils', () => {
 
 	it('should create the children map when inserting into a parent without children', () => {
 		const tree = createTree();
-		const node: NodeWithChildren = { id: 'y' };
+		const node: Node = { id: 'y' };
 
 		// tree.e has no children in the fixture
 		insertNode({
@@ -93,7 +93,7 @@ describe('tree-utils', () => {
 	it('should update a node', () => {
 		const tree = createTree();
 
-		const updated: NodeWithChildren = { id: 'b', foo: 123 };
+		const updated: Node = { id: 'b', foo: 123 };
 		updateNode({
 			tree,
 			node: updated
@@ -120,7 +120,7 @@ describe('tree-utils', () => {
 		expect(() =>
 			updateNode({
 				tree,
-				node: { id: 'does-not-exist', foo: 999 } as NodeWithChildren
+				node: { id: 'does-not-exist', foo: 999 } as Node
 			})
 		).not.toThrow();
 

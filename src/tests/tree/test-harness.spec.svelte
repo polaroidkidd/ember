@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Tree } from '$lib/tree';
-	import { type NodeWithChildren } from '$lib/tree/tree.types';
+	import { type Node } from '$lib/tree/tree.types';
 	import { deleteNode, insertNode, updateNode } from '$lib/tree/tree.utils';
 
 	import { MOCK_TREE } from '../../__mock__/data';
@@ -14,7 +14,7 @@
 	// This keeps the harness minimal while allowing deterministic tests.
 </script>
 
-{#snippet node(content: NodeWithChildren<object>)}
+{#snippet node(content: Node<object>)}
 	<div data-testid={`node-${content.id}`} class="node">
 		<button
 			data-testid={`toggle-${content.id}`}
