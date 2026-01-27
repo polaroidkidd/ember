@@ -83,7 +83,7 @@
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"publint": "^0.3.17",
 		"sass-embedded": "^1.97.3",
-		"svelte": "^5.48.0",
+		"svelte": "^5.48.1",
 		"svelte-check": "^4.3.5",
 		"svelte-highlight": "^7.9.0",
 		"svelte-lib-helpers": "^0.4.31",
@@ -119,7 +119,7 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"peerDependencies": {
-		"svelte": "^5.48.0"
+		"svelte": "^5.48.1"
 	},
 	"exports": {
 		".": {
