@@ -105,7 +105,7 @@ importers:
         specifier: ^1.97.3
         version: 1.97.3
       svelte:
-        specifier: ^5.49.2
+        specifier: ^5.50.0
         version: 5.50.0
       svelte-check:
         specifier: ^4.3.6
