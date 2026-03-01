@@ -6,7 +6,8 @@ import {
 	insertNode,
 	type Node,
 	type TreeData,
-	updateNode} from '$lib';
+	updateNode
+} from '$lib';
 
 describe('tree-utils', () => {
 	const mockTree: TreeData = {
@@ -104,6 +105,8 @@ describe('tree-utils', () => {
 		});
 
 		expect(tree.a.children!.b.foo).toBe(123);
+		// update should not drop existing subtree
+		expect(tree.a.children!.b.children!.c.id).toBe('c');
 	});
 
 	it('should update a root node', () => {
@@ -115,6 +118,15 @@ describe('tree-utils', () => {
 		});
 
 		expect(tree.e.foo).toBe('bar');
+	});
+
+	it('should preserve expanded state when updating other props', () => {
+		const tree = createTree();
+		tree.a.expanded = true;
+
+		updateNode({ tree, node: { id: 'a', name: 'New Name' } as Node });
+
+		expect(tree.a.expanded).toBe(true);
 	});
 
 	it('should not throw when updating a node that does not exist', () => {

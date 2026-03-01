@@ -6,6 +6,7 @@
 	// Use a plain mutable tree variable so tests can bind to it.
 	// We deep-clone the mock to avoid shared mutation between tests.
 	let tree = $state(MOCK_TREE);
+	let selectedId = $state<string | null>(null);
 
 	// The snippet receives content and exposes action buttons to drive
 	// the node actions directly from tests via data-testid attributes.
@@ -14,6 +15,26 @@
 
 {#snippet node(content: Node<object>)}
 	<div data-testid={`node-${content.id}`} class="node">
+		<button
+			data-testid={`select-${content.id}`}
+			onclick={() => {
+				if (selectedId && selectedId !== content.id) {
+					// Partial update on the previously-selected node.
+					// This used to drop children/expanded on that node when updateNode
+					// replaced the entire object.
+					updateNode({
+						tree,
+						node: { id: selectedId, selected: false } as Node
+					});
+				}
+
+				updateNode({ tree, node: { id: content.id, selected: true } as Node });
+				selectedId = content.id;
+			}}
+		>
+			select
+		</button>
+
 		<button
 			data-testid={`toggle-${content.id}`}
 			onclick={() => {

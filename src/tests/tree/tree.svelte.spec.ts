@@ -54,4 +54,41 @@ describe('Accordion component (integration)', () => {
 		}
 		expect(found).toBe(false);
 	});
+
+	it('does not collapse root when selection updates a child', async () => {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		globalThis.$state = (v: unknown) => v;
+
+		const Harness = (await import('./test-harness.spec.svelte')).default;
+		const { MOCK_TREE } = await import('../../__mock__/data');
+
+		const tree = MOCK_TREE as Record<
+			string,
+			{ children?: Record<string, { id: string }> }
+		>;
+		const rootId = Object.keys(tree).find((id) => {
+			const children = tree[id]?.children;
+			return !!children && Object.keys(children).length > 0;
+		});
+		if (!rootId) throw new Error('MOCK_TREE has no root with children to test');
+		const childId = Object.keys(tree[rootId].children!)[0];
+
+		render(Harness);
+
+		// Select root (partial update)
+		await page.getByTestId(`select-${rootId}`).click();
+		// Expand root
+		await page.getByTestId(`toggle-${rootId}`).click();
+		// Child should now be visible
+		await expect
+			.element(page.getByTestId(`node-${childId}`))
+			.toBeInTheDocument();
+
+		// Select child (partial update), root should remain expanded
+		await page.getByTestId(`select-${childId}`).click();
+		await expect
+			.element(page.getByTestId(`node-${childId}`))
+			.toBeInTheDocument();
+	});
 });

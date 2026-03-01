@@ -126,7 +126,16 @@ export function updateNode<T extends object = object>({
 
 		// If this is the target node, perform the operation
 		if (key === node.id) {
-			top.map[key] = node;
+			const current = top.map[key];
+			// Merge updates onto the existing node so callers can pass partial updates
+			// (eg. selection state) without blowing away children/expanded state.
+			top.map[key] = {
+				...current,
+				...node,
+				children: Object.hasOwn(node, 'children')
+					? node.children
+					: current.children
+			};
 
 			return;
 		}
