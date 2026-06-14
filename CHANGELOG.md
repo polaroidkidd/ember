@@ -1,5 +1,13 @@
 # @dle.dev/ember
 
+## 3.2.3
+
+### Patch Changes
+
+- 1f46cdd: Make the release script retryable when a release tag already exists but the npm
+  version was not published, and publish scoped releases with explicit public
+  access.
+
 ## 3.2.2
 
 ### Patch Changes
