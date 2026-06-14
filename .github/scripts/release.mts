@@ -3,9 +3,10 @@
  *
  * Simple release helper that:
  *  - reads the current version from package.json
- *  - runs `pnpm publish -r`
- *  - creates an annotated git tag `v<version>` (if not present)
+ *  - validates the release tag `v<version>` does not exist
+ *  - creates an annotated git tag `v<version>`
  *  - pushes the tag to `origin`
+ *  - runs `pnpm publish -r`
  *
  * Usage:
  *  node release.mts            # perform publish, tag, and push
@@ -34,6 +35,15 @@ function run(cmd: string, opts: Record<string, unknown> = {}): unknown {
 	return execSync(cmd, { stdio: 'inherit', ...opts });
 }
 
+function commandSucceeds(cmd: string): boolean {
+	try {
+		execSync(cmd, { stdio: 'ignore' });
+		return true;
+	} catch {
+		return false;
+	}
+}
+
 try {
 	const raw = await readFile(pkgPath, 'utf8');
 	const pkg = JSON.parse(raw);
@@ -47,32 +57,30 @@ try {
 
 	console.log(`Releasing version ${version}`);
 
-	// Publish packages
-	console.log('Running: pnpm publish -r');
-	run('pnpm publish -r');
-
-	// Check whether the tag already exists
-	let tagExists = false;
 	if (!dryRun) {
-		try {
-			execSync(`git rev-parse -q --verify refs/tags/${tag}`, {
-				stdio: 'ignore'
-			});
-			tagExists = true;
-		} catch {
-			tagExists = false;
+		if (commandSucceeds(`git rev-parse -q --verify refs/tags/${tag}`)) {
+			console.error(`Tag ${tag} already exists locally.`);
+			process.exit(1);
+		}
+
+		if (
+			commandSucceeds(
+				`git ls-remote --exit-code --tags origin refs/tags/${tag}`
+			)
+		) {
+			console.error(`Tag ${tag} already exists on origin.`);
+			process.exit(1);
 		}
 	}
 
-	if (tagExists) {
-		console.log(`Tag ${tag} already exists locally; skipping tag creation.`);
-	} else {
-		console.log(`Creating git tag ${tag}`);
-		run(`git tag -a ${tag} -m "${tag}"`);
-	}
+	console.log(`Creating git tag ${tag}`);
+	run(`git tag -a ${tag} -m "${tag}"`);
 
 	console.log(`Pushing tag ${tag} to origin`);
 	run(`git push origin ${tag}`);
+
+	console.log('Running: pnpm publish -r');
+	run('pnpm publish -r');
 
 	console.log('Release script finished.');
 } catch (err) {

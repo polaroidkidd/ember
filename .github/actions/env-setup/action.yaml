@@ -16,26 +16,17 @@ inputs:
 name: Setup Environment
 runs:
   steps:
-    - name: Git Composite Checkout
-      uses: actions/checkout@v5
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ inputs.node-version }}
     - name: Setup PNPM
       uses: pnpm/action-setup@v4
       with:
         version: ${{ inputs.pnpm-version }}
-
-    - id: pnpm-cache
-      name: Setup PNPM cache
-      uses: actions/cache@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        key: ${{ runner.os }}-pr-${{ github.event.pull_request.id }}-${{ hashFiles('./pnpm-lock.yaml') }}
-
-        path: |
-          ./node_modules
-    - if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' && inputs.install-deps == 'true' }}
+        cache: pnpm
+        cache-dependency-path: pnpm-lock.yaml
+        node-version: ${{ inputs.node-version }}
+    - if: ${{ inputs.install-deps == 'true' }}
       name: Install Dependencies
       run: pnpm i --frozen-lockfile
       shell: sh

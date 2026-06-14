@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 env:
@@ -65,7 +65,7 @@ jobs:
         run: |
           set -euo pipefail
           # run the JS ES module script directly with node (no dlx required)
-          node --input-type=module .github/scripts/extract-release-notes.mts "${{ github.ref_name }}" > RELEASE_BODY.md
+          node .github/scripts/extract-release-notes.mts "${{ github.ref_name }}" > RELEASE_BODY.md
           echo "body<<EOF" >> $GITHUB_OUTPUT
           cat RELEASE_BODY.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
