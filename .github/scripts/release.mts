@@ -98,6 +98,7 @@ try {
 	if (!packageVersionPublished) {
 		console.log('Running: npm publish --access public');
 		run('npm publish --access public');
+		console.log(`New tag: ${tag}`);
 	}
 
 	console.log('Release script finished.');
