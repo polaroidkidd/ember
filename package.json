@@ -9,7 +9,7 @@
 	"description": "A headless, accessible, and highly customizable accordion component for Svelte.",
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@github.com:polaroidkidd/ember.git"
+		"url": "git+ssh://git@github.com/polaroidkidd/ember.git"
 	},
 	"bugs": {
 		"url": "https://github.com/polaroidkidd/ember/issues"
