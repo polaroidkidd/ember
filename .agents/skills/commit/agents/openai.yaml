@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commit"
+  short_description: "Create clear commits from staged changes"
+  default_prompt: "Use $commit to review my changes and create a well-structured commit."

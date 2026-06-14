@@ -2,6 +2,7 @@ name: Changeset
 
 permissions:
   contents: write
+  id-token: write
   pull-requests: write
 
 on:
@@ -43,4 +44,3 @@ jobs:
           title: 'chore: update versions'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

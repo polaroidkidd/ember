@@ -50,8 +50,9 @@ Recent history uses short imperative subjects such as `Maintenance: Update ...`
 and occasional conventional prefixes like `chore:`. Keep commit subjects concise
 and focused on one change. For pull requests, include a clear description, test
 commands run, linked issues when applicable, and screenshots or short recordings
-for visible Svelte route changes. Keep PRs small and add tests for behavior
-changes.
+for visible Svelte route changes. Do not prefix PR titles with `[codex]`; use
+the same concise style as commit subjects. Keep PRs small and add tests for
+behavior changes.
 
 ## Security & Configuration Tips
 
