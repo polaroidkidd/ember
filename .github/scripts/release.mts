@@ -47,7 +47,12 @@ function commandSucceeds(cmd: string): boolean {
 try {
 	const raw = await readFile(pkgPath, 'utf8');
 	const pkg = JSON.parse(raw);
+	const packageName = pkg && pkg.name;
 	const version = pkg && pkg.version;
+	if (!packageName) {
+		console.error('package.json does not contain a name field');
+		process.exit(1);
+	}
 	if (!version) {
 		console.error('package.json does not contain a version field');
 		process.exit(1);
@@ -57,30 +62,43 @@ try {
 
 	console.log(`Releasing version ${version}`);
 
+	const packageVersionPublished =
+		!dryRun && commandSucceeds(`npm view ${packageName}@${version} version`);
+	const localTagExists =
+		!dryRun && commandSucceeds(`git rev-parse -q --verify refs/tags/${tag}`);
+	const remoteTagExists =
+		!dryRun &&
+		commandSucceeds(`git ls-remote --exit-code --tags origin refs/tags/${tag}`);
+	const tagExists = localTagExists || remoteTagExists;
+
+	if (packageVersionPublished && tagExists) {
+		console.log(`${packageName}@${version} is already published.`);
+		console.log(`Tag ${tag} already exists; nothing to release.`);
+		process.exit(0);
+	}
+
 	if (!dryRun) {
-		if (commandSucceeds(`git rev-parse -q --verify refs/tags/${tag}`)) {
-			console.error(`Tag ${tag} already exists locally.`);
-			process.exit(1);
+		if (packageVersionPublished) {
+			console.log(`${packageName}@${version} is already published.`);
 		}
 
-		if (
-			commandSucceeds(
-				`git ls-remote --exit-code --tags origin refs/tags/${tag}`
-			)
-		) {
-			console.error(`Tag ${tag} already exists on origin.`);
-			process.exit(1);
+		if (tagExists) {
+			console.log(`Tag ${tag} already exists; skipping tag creation.`);
 		}
 	}
 
-	console.log(`Creating git tag ${tag}`);
-	run(`git tag -a ${tag} -m "${tag}"`);
+	if (!tagExists) {
+		console.log(`Creating git tag ${tag}`);
+		run(`git tag -a ${tag} -m "${tag}"`);
 
-	console.log(`Pushing tag ${tag} to origin`);
-	run(`git push origin ${tag}`);
+		console.log(`Pushing tag ${tag} to origin`);
+		run(`git push origin ${tag}`);
+	}
 
-	console.log('Running: pnpm publish -r');
-	run('pnpm publish -r');
+	if (!packageVersionPublished) {
+		console.log('Running: pnpm publish -r --access public');
+		run('pnpm publish -r --access public');
+	}
 
 	console.log('Release script finished.');
 } catch (err) {
