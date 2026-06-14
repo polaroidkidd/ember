@@ -16,8 +16,6 @@ inputs:
 name: Setup Environment
 runs:
   steps:
-    - name: Git Composite Checkout
-      uses: actions/checkout@v5
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
