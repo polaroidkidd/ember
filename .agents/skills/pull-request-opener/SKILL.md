@@ -26,6 +26,17 @@ PR conventions and avoiding unrelated local changes.
    - Confirm the intended commits are already present, or create only the
      commit the user asked for.
    - Do not stage unrelated files.
+   - Before pushing, check whether the branch already includes a changeset:
+     `git diff --name-only <base>...HEAD -- .changeset/*.md`.
+   - Ignore `.changeset/config.json`; only markdown files count as changesets.
+   - If no changeset exists, create one before opening the PR:
+     - Use `pnpm changeset` when an interactive terminal is appropriate.
+     - Otherwise create a concise `.changeset/<slug>.md` manually with the
+       affected package, version bump, and release note.
+     - Stage only the changeset file.
+     - Commit it with a short imperative subject such as
+       `Add changeset for <change>`.
+     - Push the branch after the changeset commit exists.
    - Push the branch before opening the PR:
      `git push -u origin $(git branch --show-current)`.
 
