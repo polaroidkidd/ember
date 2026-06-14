@@ -92,7 +92,8 @@ jobs:
   publish:
     name: Publish
     environment: STAGING
-    needs: [install-dependencies]
+    if: ${{ needs.detect-changes.outputs.src == 'true' || github.event.inputs.force_deploy == true }}
+    needs: [detect-changes, install-dependencies, lint, test]
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
