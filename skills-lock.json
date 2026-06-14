@@ -1,0 +1,17 @@
+{
+	"version": 1,
+	"skills": {
+		"git-commit": {
+			"source": "github/awesome-copilot",
+			"sourceType": "github",
+			"skillPath": "skills/git-commit/SKILL.md",
+			"computedHash": "2607fc60629b82b257136dd2a7a373f0a4466c0b49df7746d845d59313c99b21"
+		},
+		"svelte-code-writer": {
+			"source": "sveltejs/ai-tools",
+			"sourceType": "github",
+			"skillPath": "plugins/claude/svelte/skills/svelte-code-writer/SKILL.md",
+			"computedHash": "c0e2cce9855f8e312cbb0a05aef164b4659c672d7723e4e598ffa6bc94890542"
+		}
+	}
+}
