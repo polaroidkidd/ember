@@ -6,7 +6,7 @@
  *  - validates the release tag `v<version>` does not exist
  *  - creates an annotated git tag `v<version>`
  *  - pushes the tag to `origin`
- *  - runs `pnpm publish -r`
+ *  - runs `npm publish --access public`
  *
  * Usage:
  *  node release.mts            # perform publish, tag, and push
@@ -96,8 +96,8 @@ try {
 	}
 
 	if (!packageVersionPublished) {
-		console.log('Running: pnpm publish -r --access public');
-		run('pnpm publish -r --access public');
+		console.log('Running: npm publish --access public');
+		run('npm publish --access public');
 	}
 
 	console.log('Release script finished.');

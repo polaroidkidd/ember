@@ -13,6 +13,10 @@ inputs:
     default: 10.17.1
     description: PNPM version
     required: false
+  registry-url:
+    default: https://registry.npmjs.org
+    description: Node package registry URL
+    required: false
 name: Setup Environment
 runs:
   steps:
@@ -26,6 +30,7 @@ runs:
         cache: pnpm
         cache-dependency-path: pnpm-lock.yaml
         node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
     - if: ${{ inputs.install-deps == 'true' }}
       name: Install Dependencies
       run: pnpm i --frozen-lockfile

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pull Request Opener"
+  short_description: "Open PRs using the repository template"
+  default_prompt: "Use $pull-request-opener to open a draft PR from the current branch using the repository pull request template."
