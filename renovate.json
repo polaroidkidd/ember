@@ -1,5 +1,11 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:recommended"],
-	"dependencyDashboard": false
+	"dependencyDashboard": false,
+	"postUpgradeTasks": {
+		"commands": ["node scripts/renovate/create-changeset.mjs"],
+		"dataFileTemplate": "{\"title\":\"{{{prTitle}}}\",\"branchName\":\"{{{branchName}}}\",\"upgrades\":[{{#each upgrades}}{\"depName\":\"{{{depName}}}\",\"newVersion\":\"{{{newVersion}}}\",\"updateType\":\"{{{updateType}}}\",\"depType\":\"{{{depType}}}\"}{{#unless @last}},{{/unless}}{{/each}}]}",
+		"fileFilters": [".changeset/*.md"],
+		"executionMode": "branch"
+	}
 }
