@@ -1,5 +1,12 @@
 # @dle.dev/ember
 
+## 3.2.4
+
+### Patch Changes
+
+- 689ca6a: Update the release workflow to use npm trusted publishing and keep the
+  publishing path aligned with the current branch-based release process.
+
 ## 3.2.3
 
 ### Patch Changes
