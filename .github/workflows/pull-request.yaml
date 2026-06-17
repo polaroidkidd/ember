@@ -24,7 +24,7 @@ jobs:
       src: ${{ steps.path-filter.outputs.src }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - id: path-filter
         uses: ./.github/actions/path-filter
   lint:
@@ -34,7 +34,7 @@ jobs:
     needs: [detect-changes]
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/env-setup
         with:
@@ -50,7 +50,7 @@ jobs:
       version: ${{ steps['resolve-playwright-version'].outputs.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: resolve-playwright-version
         id: resolve-playwright-version
@@ -70,7 +70,7 @@ jobs:
       options: --user 1001
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/env-setup
         with:
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup environment
         uses: ./.github/actions/env-setup
         with:
