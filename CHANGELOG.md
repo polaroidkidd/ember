@@ -1,5 +1,12 @@
 # @dle.dev/ember
 
+## 3.2.5
+
+### Patch Changes
+
+- 420ae98: Maintenance: Add changesets to Renovate dependency PRs
+- 6b8c939: Maintenance: Update Patch & Minor
+
 ## 3.2.4
 
 ### Patch Changes
