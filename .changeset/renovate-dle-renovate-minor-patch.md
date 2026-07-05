@@ -2,4 +2,4 @@
 "@dle.dev/ember": patch
 ---
 
-Maintenance: Update Patch & Minor
+Maintenance: Update dependency @sveltejs/kit to ^2.69.0
