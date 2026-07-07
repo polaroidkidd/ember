@@ -138,8 +138,8 @@ importers:
         specifier: ^3.2.6
         version: 3.2.6(@types/node@24.13.2)(@vitest/browser@3.2.6)(@vitest/ui@3.2.6)(jiti@2.7.0)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.100.0)(yaml@2.9.0)
       vitest-browser-svelte:
-        specifier: ^0.1.0
-        version: 0.1.0(@vitest/browser@3.2.6)(svelte@5.56.4(@typescript-eslint/types@8.62.1))(vitest@3.2.6)
+        specifier: ^2.2.0
+        version: 2.2.0(svelte@5.56.4(@typescript-eslint/types@8.62.1))(vitest@3.2.6)
       wrangler:
         specifier: ^4.107.0
         version: 4.107.0
@@ -1121,6 +1121,12 @@ packages:
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
     engines: {node: '>=18'}
+
+  '@testing-library/svelte-core@1.1.3':
+    resolution: {integrity: sha512-KkMAvXeWorxN2Yn0kdC1lfoAItxpoj4uOWzxK5leDrNxonLvS5nwBFvztrroyTszQ0Wf/EU6iLT8JhY5qcn22g==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5 || ^5.0.0-next.0
 
   '@testing-library/user-event@14.6.1':
     resolution: {integrity: sha512-vq7fv0rnt+QTXgPxr5Hjc210p6YKq2kmdziLgnsZGgLJ9e6VAShx1pACLuRjd/AS/sr7phAR58OIIpf0LlmQNw==}
@@ -2753,13 +2759,11 @@ packages:
       vite:
         optional: true
 
-  vitest-browser-svelte@0.1.0:
-    resolution: {integrity: sha512-YB6ZUZZQNqU1T9NzvTEDpwpPv35Ng1NZMPBh81zDrLEdOgROGE6nJb79NWb1Eu/a8VkHifqArpOZfJfALge6xQ==}
-    engines: {node: ^18.0.0 || >=20.0.0}
+  vitest-browser-svelte@2.2.0:
+    resolution: {integrity: sha512-gxEvWHTzU66PceLXZI9jcInSuHAumeva2DSeEYtI7T9JiFfBscrxSfQsMMEViIgEgTJmL3AZPCRYiV1bDWXooQ==}
     peerDependencies:
-      '@vitest/browser': ^2.1.0 || ^3.0.0-0
-      svelte: '>3.0.0'
-      vitest: ^2.1.0 || ^3.0.0-0
+      svelte: ^3 || ^4 || ^5 || ^5.0.0-next.0
+      vitest: ^4.0.0
 
   vitest@3.2.6:
     resolution: {integrity: sha512-xejya+bT/j/+R/AGa1XOfRxLmNUlLtlwjRsFUILF+xHfzElmGcmFydy2gqqIrd62ptIEfwVMofd19uNWD9L7Nw==}
@@ -3737,6 +3741,10 @@ snapshots:
       lz-string: 1.5.0
       picocolors: 1.1.1
       pretty-format: 27.5.1
+
+  '@testing-library/svelte-core@1.1.3(svelte@5.56.4(@typescript-eslint/types@8.62.1))':
+    dependencies:
+      svelte: 5.56.4(@typescript-eslint/types@8.62.1)
 
   '@testing-library/user-event@14.6.1(@testing-library/dom@10.4.1)':
     dependencies:
@@ -5263,9 +5271,9 @@ snapshots:
     optionalDependencies:
       vite: 7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.100.0)(yaml@2.9.0)
 
-  vitest-browser-svelte@0.1.0(@vitest/browser@3.2.6)(svelte@5.56.4(@typescript-eslint/types@8.62.1))(vitest@3.2.6):
+  vitest-browser-svelte@2.2.0(svelte@5.56.4(@typescript-eslint/types@8.62.1))(vitest@3.2.6):
     dependencies:
-      '@vitest/browser': 3.2.6(playwright@1.61.1)(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.100.0)(yaml@2.9.0))(vitest@3.2.6)
+      '@testing-library/svelte-core': 1.1.3(svelte@5.56.4(@typescript-eslint/types@8.62.1))
       svelte: 5.56.4(@typescript-eslint/types@8.62.1)
       vitest: 3.2.6(@types/node@24.13.2)(@vitest/browser@3.2.6)(@vitest/ui@3.2.6)(jiti@2.7.0)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.100.0)(yaml@2.9.0)
 
