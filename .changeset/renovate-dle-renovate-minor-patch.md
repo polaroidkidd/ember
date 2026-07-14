@@ -2,4 +2,4 @@
 "@dle.dev/ember": patch
 ---
 
-Maintenance: Update Patch & Minor
+Maintenance: Update dependency eslint to ^9.39.5
