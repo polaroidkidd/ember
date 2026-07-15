@@ -2,4 +2,4 @@
 "@dle.dev/ember": patch
 ---
 
-Maintenance: Update dependency eslint to ^9.39.5
+Maintenance: Update dependency svelte-highlight to ^7.15.0
