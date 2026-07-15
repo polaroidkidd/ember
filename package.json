@@ -85,7 +85,7 @@
 		"sass-embedded": "^1.100.0",
 		"svelte": "^5.56.4",
 		"svelte-check": "^4.7.2",
-		"svelte-highlight": "^7.14.1",
+		"svelte-highlight": "^7.15.0",
 		"svelte-lib-helpers": "^0.4.31",
 		"tailwindcss": "^4.3.2",
 		"typescript": "^5.9.3",

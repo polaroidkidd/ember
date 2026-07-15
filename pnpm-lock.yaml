@@ -111,8 +111,8 @@ importers:
         specifier: ^4.7.2
         version: 4.7.2(picomatch@4.0.4)(svelte@5.56.4(@typescript-eslint/types@8.63.0))(typescript@5.9.3)
       svelte-highlight:
-        specifier: ^7.14.1
-        version: 7.14.1
+        specifier: ^7.15.0
+        version: 7.15.0
       svelte-lib-helpers:
         specifier: ^0.4.31
         version: 0.4.31
@@ -2569,8 +2569,8 @@ packages:
       svelte:
         optional: true
 
-  svelte-highlight@7.14.1:
-    resolution: {integrity: sha512-Ruxkxp9N9/hJE2TO/NU/LdIuK0LeXPPMOgAJIBHUvwXzryfLK2yeC1VZlbOcfjSB6JUhPU6QCBobTAG0HmMWpQ==}
+  svelte-highlight@7.15.0:
+    resolution: {integrity: sha512-jeEe/cnmaH+33mTlb2yO/3gRcKfXdHuDmMDLnsqU9wEQO7mHbEffNCCuEHb6kJQLqXHuz23vPp1vRb2jfaPNSw==}
 
   svelte-lib-helpers@0.4.31:
     resolution: {integrity: sha512-wLhMXwfJymd4IHMFIs7/vEWv2fkzbITPvYEDd2brox3b28t6oxR+iQB7WdNKuKbn/bLaLzu8CJpZeRsYyhjUkw==}
@@ -5085,7 +5085,7 @@ snapshots:
     optionalDependencies:
       svelte: 5.56.4(@typescript-eslint/types@8.63.0)
 
-  svelte-highlight@7.14.1:
+  svelte-highlight@7.15.0:
     dependencies:
       highlight.js: 11.11.1
       magic-string: 0.30.21
