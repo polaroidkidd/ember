@@ -2,4 +2,4 @@
 "@dle.dev/ember": patch
 ---
 
-Maintenance: Update Patch & Minor
+Maintenance: Update dependency svelte to ^5.56.5
