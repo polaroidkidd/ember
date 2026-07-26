@@ -2,4 +2,4 @@
 "@dle.dev/ember": patch
 ---
 
-Maintenance: Update dependency lint-staged to ^17.1.0
+Maintenance: Update Patch & Minor
